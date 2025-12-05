@@ -18,6 +18,7 @@
             --epic: #a855f7;
             --legendary: #f59e0b;
             --mythic: #f43f5e;
+            --ultrapremium: #00ffff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -244,6 +245,41 @@
         .c-epic { border-color: var(--epic); }
         .c-legendary { border-color: var(--legendary); box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
         .c-mythic { border-color: var(--mythic); box-shadow: 0 0 25px rgba(244, 63, 94, 0.4); }
+        .c-ultrapremium { 
+            border-color: #00ffff; 
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.5);
+            animation: neonGlow 1.5s ease-in-out infinite;
+            border-width: 3px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+        }
+
+        @keyframes neonGlow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(0, 255, 255, 1), 0 0 80px rgba(255, 0, 255, 0.8), inset 0 0 30px rgba(0, 255, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.6);
+            }
+        }
+
+        .case-card.c-ultrapremium h3 {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.6);
+            animation: titleGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.6); }
+            50% { text-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(255, 0, 255, 0.8); }
+        }
+
+        .case-card.c-ultrapremium .price-tag {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(255, 0, 255, 0.3));
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 10px rgba(255, 0, 255, 0.4);
+        }
 
         .case-img { font-size: 4rem; margin-bottom: 15px; }
         .price-tag { 
@@ -686,6 +722,11 @@
             50% { transform: scale(1.1); }
         }
 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .hidden { display: none !important; }
 
         @media (max-width: 768px) {
@@ -820,8 +861,20 @@
                         <p style="font-size:0.9rem; color:#94a3b8; margin: 10px 0;">L'élite absolue</p>
                         <div class="price-tag">💎 1500</div>
                     </div>
+                    <div class="case-card c-ultrapremium" onclick="app.openCase('ultrapremium')">
+                        <div class="case-img" style="animation: spin 3s linear infinite;">⚡</div>
+                        <h3>CAISSE ULTRA PREMIUM</h3>
+                        <p style="font-size:0.9rem; color:#00ffff; margin: 10px 0; text-shadow: 0 0 10px rgba(0,255,255,0.8);">💎 100,000 OU RIEN ! 💎</p>
+                        <p style="font-size:0.8rem; color:#ff00ff; margin: 5px 0;">1 chance sur 1000</p>
+                        <div class="price-tag">💎 50,000</div>
+                    </div>
+                    <button onclick="app.getFreeCase()" class="btn-main" 
+	                   style="margin-bottom:25px; width:100%; background:var(--success); color:#0f172a;">
+                      	🎁 Ouvrir ma Caisse Gratuite
+                    </button>
                 </div>
             </div>
+
 
             <!-- SECTION INVENTAIRE -->
             <div id="sec-inventory" class="section">
@@ -901,6 +954,51 @@
                         <div class="gift-card" style="background:linear-gradient(45deg, #1DB954, #191414)">SPOTIFY<br>3 mois</div>
                         <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 8,000</strong></p>
                         <button class="btn-main" onclick="app.redeemCode('Spotify 3 mois', 8000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #dd4b39, #c53727)">NETFLIX<br>1 mois</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 6,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Netflix 1 mois', 6000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #3bccff, #1fb0d1)">GOOGLE PLAY<br>15€</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 7,500</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Google Play 15€', 7500)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #a335ee, #7b68ee)">V-BUCKS<br>2,800</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 12,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Fortnite V-Bucks 2800', 12000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #1b1b3f, #5c3aee)">FIFA POINTS<br>4,600</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 15,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('FIFA Points 4600', 15000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #00a8e1, #0055cc)">CLASH ROYALE<br>500 Gems</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 8,500</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Clash Royale 500 Gems', 8500)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #ff6b00, #ffb700)">PLAYSTORE<br>20€</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 10,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Play Store 20€', 10000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #f4b942, #d4802d)">XBOX<br>25€</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 12,500</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Xbox 25€', 12500)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #2a2a2a, #ffd700)">APPLE ITUNES<br>15€</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 7,500</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Apple iTunes 15€', 7500)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #ef4444, #1f2937)">YOUTUBE PREMIUM<br>3 mois</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 9,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('YouTube Premium 3 mois', 9000)">Échanger</button>
                     </div>
                 </div>
             </div>
@@ -1013,33 +1111,55 @@
                 { id: 'c1', name: 'Vieux Caillou', val: 2 },
                 { id: 'c2', name: 'Bout de Bois', val: 3 },
                 { id: 'c3', name: 'Pièce Rouillée', val: 5 },
-                { id: 'c4', name: 'Plume Usée', val: 4 }
+                { id: 'c4', name: 'Plume Usée', val: 4 },
+                { id: 'z1', name: 'Poussière Inutile', val: 0 },
+                { id: 'z2', name: 'Truc Cassé', val: 0 }
             ],
             rare: [
                 { id: 'r1', name: 'Dague en Fer', val: 20 },
                 { id: 'r2', name: 'Potion Bleue', val: 25 },
                 { id: 'r3', name: 'Cape Verte', val: 30 },
-                { id: 'r4', name: 'Grimoire Ancien', val: 35 }
+                { id: 'r4', name: 'Grimoire Ancien', val: 35 },
+                { id: 'z1', name: 'Poussière Inutile', val: 0 },
+                { id: 'z2', name: 'Truc Cassé', val: 0 },
+                { id: 'z3', name: 'Débris Sans Valeur', val: 0 }
             ],
             epic: [
                 { id: 'e1', name: 'Épée de Cristal', val: 80 },
                 { id: 'e2', name: 'Anneau Magique', val: 100 },
                 { id: 'e3', name: 'Casque Dragon', val: 120 },
-                { id: 'e4', name: 'Armure Enchantée', val: 140 }
+                { id: 'e4', name: 'Armure Enchantée', val: 140 },
+                { id: 'z1', name: 'Poussière Inutile', val: 0 },
+                { id: 'z2', name: 'Truc Cassé', val: 0 },
+                { id: 'z3', name: 'Débris Sans Valeur', val: 0 }
+
             ],
             legendary: [
                 { id: 'l1', name: 'Trône d\'Or', val: 300 },
                 { id: 'l2', name: 'Sceptre Royal', val: 400 },
-                { id: 'l3', name: 'Orbe de Pouvoir', val: 450 }
+                { id: 'l3', name: 'Orbe de Pouvoir', val: 450 },
+                { id: 'z1', name: 'Poussière Inutile', val: 0 },
+                { id: 'z2', name: 'Truc Cassé', val: 0 },
+                { id: 'z3', name: 'Débris Sans Valeur', val: 0 }
+
             ],
             mythic: [
                 { id: 'm1', name: '💎 DIAMANT PUR', val: 1000 },
                 { id: 'm2', name: '👑 COURONNE DIVINE', val: 2000 },
-                { id: 'm3', name: '🌟 ÉTOILE ÉTERNELLE', val: 1500 }
+                { id: 'm3', name: '🌟 ÉTOILE ÉTERNELLE', val: 1500 },
+                { id: 'z1', name: 'Poussière Inutile', val: 0 },
+                { id: 'z2', name: 'Truc Cassé', val: 0 },
+                { id: 'z3', name: 'Débris Sans Valeur', val: 0 }
+
+            ],
+            ultrapremium: [
+                { id: 'ultra1', name: '🎰 JACKPOT ULTRA 💰', val: 100000 },
+                { id: 'ultra_nothing1', name: '💀 VOUS AVEZ PERDU TOUT ! 💀', val: 0 }
             ]
         };
 
-        const CASE_PRICES = { common: 10, rare: 50, epic: 150, legendary: 500, mythic: 1500 };
+        const CASE_PRICES = { common: 10, rare: 50, epic: 150, legendary: 500, mythic: 1500, ultrapremium: 50000 };
+        let nextFreeCase = parseInt(localStorage.getItem('dc_freecase_time')) || 0;
 
         const app = {
             user: null,
@@ -1059,6 +1179,58 @@
                     { id: Date.now(), seller: 'Bot_Alpha', item: ITEMS_DB.rare[0], price: 30, rarity: 'rare' },
                     { id: Date.now()+1, seller: 'Bot_Beta', item: ITEMS_DB.epic[0], price: 90, rarity: 'epic' }
                 ];
+// === BOTS MARKET AUTO ===
+setInterval(() => {
+    const botNames = ["Bot_Ares", "Bot_Nyx", "Bot_Kappa", "Bot_Zero"];
+
+    const randomBot = botNames[Math.floor(Math.random() * botNames.length)];
+    const rarityList = ["common", "rare", "epic", "legendary"];
+    const rarity = rarityList[Math.floor(Math.random() * rarityList.length)];
+
+    const pool = ITEMS_DB[rarity];
+    const item = pool[Math.floor(Math.random() * pool.length)];
+
+    app.marketData.push({
+        id: Date.now(),
+        seller: randomBot,
+        item: item,
+        price: Math.floor(item.val * (1 + Math.random() * 1.5)),
+        rarity: rarity
+    });
+
+    app.saveUser();
+}, 20000); // un bot ajoute une offre toutes les 20 sec
+// === BOTS QUI ACHÈTENT DES ITEMS ===
+setInterval(() => {
+    if (app.marketData.length === 0) return;
+
+    const chance = Math.random();
+    if (chance < 0.4) return; // 40% de chance qu’un bot achète
+
+    const offers = app.marketData.filter(o => o.seller !== "BOT");
+    if (offers.length === 0) return;
+
+    const pick = offers[Math.floor(Math.random() * offers.length)];
+
+    // Trouver propriétaire
+    const seller = app.usersDB[pick.seller];
+    if (seller) {
+        seller.diamonds += pick.price;
+        app.usersDB[pick.seller] = seller;
+        localStorage.setItem('dc_users', JSON.stringify(app.usersDB));
+    }
+
+    // Notif si c'est toi
+    if (pick.seller === app.user.name) {
+        app.notify(`🤖 Un bot a acheté ton item : +${pick.price}💎`, "success");
+        app.user.diamonds += pick.price;
+        app.saveUser();
+    }
+
+    // Retirer l'offre
+    app.marketData = app.marketData.filter(o => o.id !== pick.id);
+    app.saveUser();
+}, 15000); // tentative d'achat bot toutes les 15 sec
 
                 // Vérifier si connecté
                 const currentUser = localStorage.getItem('dc_current_user');
@@ -1213,6 +1385,14 @@
                 if (type === 'epic') pool = [...ITEMS_DB.rare, ...ITEMS_DB.epic, ...ITEMS_DB.epic, ...ITEMS_DB.legendary];
                 if (type === 'legendary') pool = [...ITEMS_DB.epic, ...ITEMS_DB.legendary, ...ITEMS_DB.legendary, ...ITEMS_DB.mythic];
                 if (type === 'mythic') pool = [...ITEMS_DB.legendary, ...ITEMS_DB.mythic, ...ITEMS_DB.mythic];
+                if (type === 'ultrapremium') {
+                    const chanceDeLaVie = Math.random() * 1000;
+                    if (chanceDeLaVie < 1) {
+                        pool = [ITEMS_DB.ultrapremium[0]];
+                    } else {
+                        pool = [ITEMS_DB.ultrapremium[1]];
+                    }
+                }
 
                 const winner = pool[Math.floor(Math.random() * pool.length)];
                 
@@ -1221,18 +1401,42 @@
                 if (ITEMS_DB.epic.includes(winner)) rarity = 'epic';
                 if (ITEMS_DB.legendary.includes(winner)) rarity = 'legendary';
                 if (ITEMS_DB.mythic.includes(winner)) rarity = 'mythic';
+                if (ITEMS_DB.ultrapremium.includes(winner)) rarity = 'ultrapremium';
 
-                this.runRoulette(pool, winner, rarity);
+                this.runRoulette(pool, winner, rarity, type);
             },
 
-            runRoulette: function(pool, winner, winnerRarity) {
+            getFreeCase: function() {
+                const now = Date.now();
+
+                if (now < nextFreeCase) {
+                    const reste = Math.ceil((nextFreeCase - now) / 60000);
+                    return this.notify(`⏳ Reviens dans ${reste} min pour ton coffre gratuit !`, "error");
+                }
+
+                nextFreeCase = now + (10 * 60 * 1000);
+                localStorage.setItem('dc_freecase_time', nextFreeCase);
+
+                this.openCase("common");
+                this.notify("🎁 Caisse gratuite obtenue !", "success");
+            },
+
+            runRoulette: function(pool, winner, winnerRarity, caseType = 'common') {
                 this.isSpinning = true;
                 const wrapper = document.getElementById('roulette-wrapper');
                 const strip = document.getElementById('roulette-strip');
                 const msg = document.getElementById('win-message');
                 
                 wrapper.style.display = 'block';
-                msg.innerHTML = '<span style="color: var(--gold)">🎲 Tirage en cours...</span>';
+                
+                if (caseType === 'ultrapremium') {
+                    msg.innerHTML = '<span style="color: #00ffff; text-shadow: 0 0 20px rgba(0,255,255,1); font-size: 1.2rem; font-weight: bold;">⚡ TIRAGE ULTRA PREMIUM ⚡</span>';
+                    wrapper.style.background = 'linear-gradient(to bottom, #000033, #001a1a)';
+                    wrapper.style.boxShadow = '0 0 50px rgba(0,255,255,0.8), 0 0 100px rgba(255,0,255,0.6)';
+                } else {
+                    msg.innerHTML = '<span style="color: var(--gold)">🎲 Tirage en cours...</span>';
+                }
+                
                 strip.style.transition = 'none';
                 strip.style.transform = 'translateX(0)';
                 strip.innerHTML = '';
@@ -1248,6 +1452,7 @@
                         if(ITEMS_DB.epic.includes(randomItem)) r = 'epic';
                         if(ITEMS_DB.legendary.includes(randomItem)) r = 'legendary';
                         if(ITEMS_DB.mythic.includes(randomItem)) r = 'mythic';
+                        if(ITEMS_DB.ultrapremium.includes(randomItem)) r = 'ultrapremium';
                         itemsToShow.push({item: randomItem, rarity: r});
                     }
                 }
@@ -1255,8 +1460,12 @@
                 itemsToShow.forEach(obj => {
                     const div = document.createElement('div');
                     div.className = 'roulette-item';
+                    let glowStyle = '';
+                    if (obj.rarity === 'ultrapremium') {
+                        glowStyle = 'text-shadow: 0 0 20px rgba(0,255,255,1), 0 0 10px rgba(255,0,255,0.8);';
+                    }
                     div.innerHTML = `
-                        <span style="color:var(--${obj.rarity}); font-size: 2rem;">★</span>
+                        <span style="color:var(--${obj.rarity}); font-size: 2rem; ${glowStyle}">★</span>
                         <small style="color: #cbd5e1; margin-top: 5px;">${obj.item.name}</small>
                     `;
                     div.style.borderBottom = `4px solid var(--${obj.rarity})`;
@@ -1273,7 +1482,11 @@
 
                 setTimeout(() => {
                     this.isSpinning = false;
-                    msg.innerHTML = `🎉 Gagné : <span style="color:var(--${winnerRarity}); font-weight: bold;">${winner.name}</span> ! (+${winner.val}💎)`;
+                    let displayRarity = winnerRarity;
+                    if (winnerRarity === 'ultrapremium') {
+                        displayRarity = '#00ffff';
+                    }
+                    msg.innerHTML = `🎉 Gagné : <span style="color:${displayRarity === '#00ffff' ? displayRarity : 'var(--' + winnerRarity + ')'}; font-weight: bold; text-shadow: ${winnerRarity === 'ultrapremium' ? '0 0 15px rgba(0,255,255,1)' : 'none'};">${winner.name}</span> ! (+${winner.val}💎)`;
                     this.user.inventory.push({ ...winner, rarity: winnerRarity, uid: Date.now() });
                     this.saveUser();
                     this.notify(`✨ ${winner.name} ajouté à ton inventaire !`, 'success');
@@ -1429,6 +1642,48 @@
                 document.getElementById('success-animation').classList.remove('active');
             },
 
+            generateCardCode: function(cardType) {
+                const getRandomHex = (length) => {
+                    let result = '';
+                    for (let i = 0; i < length; i++) {
+                        result += Math.floor(Math.random() * 16).toString(16).toUpperCase();
+                    }
+                    return result;
+                };
+                
+                const getRandomNum = (length) => {
+                    let result = '';
+                    for (let i = 0; i < length; i++) {
+                        result += Math.floor(Math.random() * 10);
+                    }
+                    return result;
+                };
+                
+                const codes = {
+                    'Amazon': `AMZN-${getRandomHex(4)}-${getRandomHex(4)}-${getRandomHex(4)}`,
+                    'PSN': `${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}`,
+                    'Steam': `STEAM-${getRandomHex(8)}-${getRandomHex(8)}`,
+                    'Spotify': `SPT${getRandomNum(5)}-${getRandomNum(4)}-${getRandomNum(4)}`,
+                    'Netflix': `NF-${getRandomNum(3)}-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}`,
+                    'Google Play': `GPT-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}`,
+                    'Fortnite': `VB-${getRandomHex(4)}-${getRandomHex(4)}-${getRandomHex(4)}-${getRandomHex(4)}`,
+                    'FIFA': `FUT${getRandomNum(4)}${getRandomNum(4)}${getRandomNum(4)}${getRandomNum(4)}`,
+                    'Clash Royale': `CR-${getRandomNum(5)}-${getRandomNum(5)}-${getRandomNum(5)}`,
+                    'Play Store': `PS-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}`,
+                    'Xbox': `${getRandomNum(3)}-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}`,
+                    'Apple': `APP-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}-${getRandomNum(4)}`,
+                    'YouTube': `YT${getRandomNum(3)}-${getRandomNum(5)}-${getRandomNum(5)}-${getRandomNum(5)}`
+                };
+                
+                for (let key in codes) {
+                    if (cardType.includes(key)) {
+                        return codes[key];
+                    }
+                }
+                
+                return `GC-${getRandomHex(4)}-${getRandomHex(4)}-${getRandomHex(4)}`;
+            },
+
             redeemCode: function(name, cost) {
                 if (this.user.diamonds < cost) {
                     return this.notify(`Il te faut ${cost.toLocaleString()} diamants !`, "error");
@@ -1437,7 +1692,7 @@
                 this.user.diamonds -= cost;
                 this.saveUser();
                 
-                const code = Math.random().toString(36).substring(2, 10).toUpperCase() + "-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+                const code = this.generateCardCode(name);
                 
                 // Afficher dans un message stylé
                 const codeDisplay = document.createElement('div');
@@ -1459,7 +1714,7 @@
                     <h2 style="color: var(--gold); margin-bottom: 20px;">🎉 FÉLICITATIONS !</h2>
                     <p style="margin-bottom: 15px; color: #cbd5e1;">Voici ta carte cadeau <strong>${name}</strong></p>
                     <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 8px; margin: 20px 0;">
-                        <p style="font-size: 1.5rem; font-family: monospace; color: var(--primary); letter-spacing: 2px;">${code}</p>
+                        <p style="font-size: 1.3rem; font-family: monospace; color: var(--primary); letter-spacing: 3px; font-weight: bold;">${code}</p>
                     </div>
                     <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 20px;">📋 Note bien ce code, il ne sera plus affiché !</p>
                     <button class="btn-main" onclick="this.parentElement.remove()" style="max-width: 200px;">Fermer</button>
