@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💎 Diamond Case - Gagne des Cartes Cadeaux</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-panel: #1e293b;
+            --primary: #38bdf8;
+            --accent: #818cf8;
+            --success: #4ade80;
+            --danger: #f87171;
+            --gold: #fbbf24;
+            --common: #94a3b8;
+            --rare: #4ade80;
+            --epic: #a855f7;
+            --legendary: #f59e0b;
+            --mythic: #f43f5e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        header {
+            background-color: rgba(15, 23, 42, 0.95);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        
+        nav { display: flex; gap: 15px; }
+        nav button {
+            background: none;
+            border: none;
+            color: #cbd5e1;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        nav button:hover, nav button.active {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+        }
+
+        .user-stats {
+            background: rgba(0,0,0,0.3);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Layout */
+        main { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+
+        h2 { 
+            border-left: 5px solid var(--primary); 
+            padding-left: 15px; 
+            margin-bottom: 25px; 
+            font-size: 1.8rem;
+        }
+
+        /* Alertes */
+        #alert-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            background: var(--bg-panel);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+            min-width: 280px;
+        }
+
+        /* AUTH SCREEN AMÉLIORÉ */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-box {
+            max-width: 450px;
+            width: 100%;
+            background: var(--bg-panel);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.3);
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .auth-tab.active {
+            background: var(--primary);
+            color: #0f172a;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #334155;
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-main:active { transform: scale(0.98); }
+
+        /* Caisses */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .case-card {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .case-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); 
+        }
+        
+        .c-common { border-color: var(--common); }
+        .c-rare { border-color: var(--rare); }
+        .c-epic { border-color: var(--epic); }
+        .c-legendary { border-color: var(--legendary); box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+        .c-mythic { border-color: var(--mythic); box-shadow: 0 0 25px rgba(244, 63, 94, 0.4); }
+
+        .case-img { font-size: 4rem; margin-bottom: 15px; }
+        .price-tag { 
+            background: rgba(0,0,0,0.6); 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            display: inline-block; 
+            margin-top: 15px; 
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Roulette */
+        #roulette-wrapper {
+            background: linear-gradient(to bottom, #000, #111);
+            height: 140px;
+            margin: 30px 0;
+            position: relative;
+            border-radius: 12px;
+            border: 3px solid var(--gold);
+            overflow: hidden;
+            display: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        #roulette-strip {
+            display: flex;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            transition: transform 5s cubic-bezier(0.1, 0.9, 0.3, 1);
+        }
+
+        .roulette-item {
+            width: 130px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-right: 2px solid #222;
+            flex-shrink: 0;
+            background: var(--bg-panel);
+        }
+
+        .indicator {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, transparent, white, transparent);
+            z-index: 10;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px white, 0 0 40px white;
+        }
+
+        #win-message {
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 1.4rem;
+            min-height: 30px;
+        }
+
+        /* Inventaire & Market */
+        .item-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .item-card {
+            background: var(--bg-panel);
+            width: 180px;
+            padding: 15px;
+            border-radius: 10px;
+            border-bottom: 4px solid grey;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .item-card.common { border-color: var(--common); }
+        .item-card.rare { border-color: var(--rare); }
+        .item-card.epic { border-color: var(--epic); }
+        .item-card.legendary { border-color: var(--legendary); }
+        .item-card.mythic { border-color: var(--mythic); }
+
+        .btn-action {
+            width: 100%;
+            margin-top: 8px;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn-action:hover { opacity: 0.9; }
+        .btn-sell { background-color: var(--success); color: #0f172a; }
+        .btn-market { background-color: var(--accent); }
+        .btn-buy { background-color: var(--gold); color: black; }
+
+        /* SHOP DIAMANTS AMÉLIORÉ */
+        .diamond-packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .diamond-package {
+            background: var(--bg-panel);
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diamond-package.featured {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.2);
+        }
+
+        .diamond-package.featured::before {
+            content: "POPULAIRE";
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--gold);
+            color: #0f172a;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .diamond-package:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .diamond-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+
+        .diamond-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .payment-methods {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+        }
+
+        .payment-method {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #334155;
+            background: rgba(15, 23, 42, 0.5);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        /* Payment Modal Overlay */
+        .payment-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .payment-overlay.active {
+            display: flex;
+        }
+
+        .payment-modal {
+            background: var(--bg-panel);
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .payment-form {
+            display: none;
+        }
+
+        .payment-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .btn-close:hover {
+            color: var(--danger);
+        }
+
+        /* Animation de validation */
+        .success-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 400;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-animation.active {
+            display: flex;
+        }
+
+        .success-checkmark {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--success);
+            position: relative;
+            animation: scaleIn 0.5s ease;
+            margin-bottom: 30px;
+        }
+
+        .success-checkmark::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: var(--success);
+            animation: checkmark 0.8s ease 0.3s both;
+        }
+
+        .success-message {
+            text-align: center;
+            animation: fadeIn 0.8s ease 0.5s both;
+        }
+
+        .success-message h2 {
+            font-size: 2.5rem;
+            color: var(--success);
+            margin-bottom: 15px;
+            border: none;
+            padding: 0;
+        }
+
+        .success-message p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .success-diamonds {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 20px 0;
+            animation: pulse 1s ease infinite;
+        }
+
+        /* Shop Cadeaux */
+        .shop-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .shop-item {
+            background: var(--bg-panel);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .gift-card {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: white;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1.4rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Market Price Input Inline */
+        .market-price-form {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .market-price-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .market-price-form input {
+            padding: 8px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .market-price-form button {
+            width: 48%;
+            padding: 8px;
+            margin: 2px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-confirm {
+            background: var(--success);
+            color: #0f172a;
+        }
+
+        .btn-cancel {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Animations Keyframes */
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+
+        @keyframes slideIn { 
+            from { transform: translateX(100%); } 
+            to { transform: translateX(0); } 
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        @keyframes checkmark {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            .cases-grid, .diamond-packages, .shop-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            nav button {
+                font-size: 0.85rem;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ÉCRAN D'AUTHENTIFICATION -->
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1>💎 Diamond Case</h1>
+                <p style="color: #94a3b8;">Gagne des cartes cadeaux en ouvrant des caisses !</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="app.switchAuthTab('login')">Connexion</button>
+                <button class="auth-tab" onclick="app.switchAuthTab('register')">Inscription</button>
+            </div>
+
+            <!-- Formulaire de Connexion -->
+            <form id="login-form" class="auth-form active" onsubmit="app.login(event)">
+                <div class="form-group">
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" id="login-username" required placeholder="Entre ton pseudo">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="login-password" required placeholder="Ton mot de passe">
+                </div>
+                <button type="submit" class="btn-main">Se Connecter</button>
+            </form>
+
+            <!-- Formulaire d'Inscription -->
+            <form id="register-form" class="auth-form" onsubmit="app.register(event)">
+                <div class="form-group">
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" id="register-username" required placeholder="Choisis ton pseudo" minlength="3">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="register-email" required placeholder="ton@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="register-password" required placeholder="Mot de passe sécurisé" minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>Confirmer le mot de passe</label>
+                    <input type="password" id="register-confirm" required placeholder="Répète ton mot de passe">
+                </div>
+                <button type="submit" class="btn-main">Créer mon Compte</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- APPLICATION PRINCIPALE -->
+    <div id="app-container" class="hidden">
+        
+        <header>
+            <div class="logo">💎 DiamondCase</div>
+            <nav>
+                <button onclick="app.nav('cases')" class="active">Caisses</button>
+                <button onclick="app.nav('inventory')">Inventaire</button>
+                <button onclick="app.nav('market')">Marché</button>
+                <button onclick="app.nav('shop')">💎 Shop</button>
+                <button onclick="app.nav('redeem')" style="color:var(--gold)">🎁 Cadeaux</button>
+                <button onclick="app.logout()" style="color:var(--danger)">Déconnexion</button>
+            </nav>
+            <div class="user-stats">
+                <span id="user-name" style="color: white; margin-right: 15px;"></span>
+                💎 <span id="user-diamonds">0</span>
+            </div>
+        </header>
+
+        <div id="alert-container"></div>
+
+        <main>
+            
+            <!-- SECTION CAISSES -->
+            <div id="sec-cases" class="section active">
+                
+                <div id="roulette-wrapper">
+                    <div class="indicator"></div>
+                    <div id="roulette-strip"></div>
+                </div>
+                <div id="win-message"></div>
+
+                <h2>Choisir une Caisse</h2>
+                <div class="cases-grid">
+                    <div class="case-card c-common" onclick="app.openCase('common')">
+                        <div class="case-img">📦</div>
+                        <h3>Caisse Commune</h3>
+                        <p style="font-size:0.9rem; color:#94a3b8; margin: 10px 0;">Objets basiques pour débuter</p>
+                        <div class="price-tag">💎 10</div>
+                    </div>
+                    <div class="case-card c-rare" onclick="app.openCase('rare')">
+                        <div class="case-img">💼</div>
+                        <h3>Caisse Rare</h3>
+                        <p style="font-size:0.9rem; color:#94a3b8; margin: 10px 0;">Meilleure chance de gains</p>
+                        <div class="price-tag">💎 50</div>
+                    </div>
+                    <div class="case-card c-epic" onclick="app.openCase('epic')">
+                        <div class="case-img">🔮</div>
+                        <h3>Caisse Épique</h3>
+                        <p style="font-size:0.9rem; color:#94a3b8; margin: 10px 0;">Objets de grande valeur</p>
+                        <div class="price-tag">💎 150</div>
+                    </div>
+                    <div class="case-card c-legendary" onclick="app.openCase('legendary')">
+                        <div class="case-img">👑</div>
+                        <h3>Caisse Légendaire</h3>
+                        <p style="font-size:0.9rem; color:#94a3b8; margin: 10px 0;">Jackpot possible !</p>
+                        <div class="price-tag">💎 500</div>
+                    </div>
+                    <div class="case-card c-mythic" onclick="app.openCase('mythic')">
+                        <div class="case-img">🐲</div>
+                        <h3>Caisse Mythique</h3>
+                        <p style="font-size:0.9rem; color:#94a3b8; margin: 10px 0;">L'élite absolue</p>
+                        <div class="price-tag">💎 1500</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION INVENTAIRE -->
+            <div id="sec-inventory" class="section">
+                <h2>Mon Inventaire</h2>
+                <p style="color: #94a3b8; margin-bottom: 20px;">Vends tes objets rapidement ou mets-les sur le marché pour plus de profit !</p>
+                <div id="inventory-list" class="item-grid"></div>
+            </div>
+
+            <!-- SECTION MARCHÉ -->
+            <div id="sec-market" class="section">
+                <h2>Marché des Joueurs</h2>
+                <p style="color: #94a3b8; margin-bottom: 20px;">Achète les objets des autres joueurs à prix négocié !</p>
+                <div id="market-list" class="item-grid"></div>
+            </div>
+
+            <!-- SECTION SHOP DIAMANTS -->
+            <div id="sec-shop" class="section">
+                <h2>💎 Boutique de Diamants</h2>
+                <p style="color: #94a3b8; margin-bottom: 30px;">Achète des diamants pour ouvrir plus de caisses !</p>
+                
+                <div class="diamond-packages">
+                    <div class="diamond-package">
+                        <h3>Starter Pack</h3>
+                        <div class="diamond-amount">💎 100</div>
+                        <div class="diamond-price">2.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Parfait pour débuter</p>
+                        <button class="btn-main" onclick="app.selectPackage(100, 2.99)">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package featured">
+                        <h3>Pack Populaire</h3>
+                        <div class="diamond-amount">💎 1,000</div>
+                        <div class="diamond-price">9.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Meilleur rapport qualité/prix</p>
+                        <button class="btn-main" onclick="app.selectPackage(1000, 9.99)">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package">
+                        <h3>Pack Premium</h3>
+                        <div class="diamond-amount">💎 5,000</div>
+                        <div class="diamond-price">39.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Pour les joueurs sérieux</p>
+                        <button class="btn-main" onclick="app.selectPackage(5000, 39.99)">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package" style="border-color: var(--mythic);">
+                        <h3>Pack Légende</h3>
+                        <div class="diamond-amount">💎 15,000</div>
+                        <div class="diamond-price">99.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Maximum de diamants !</p>
+                        <button class="btn-main" onclick="app.selectPackage(15000, 99.99)">Acheter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION CADEAUX -->
+            <div id="sec-redeem" class="section">
+                <h2>🎁 Boutique Cadeaux</h2>
+                <p style="color: #94a3b8; margin-bottom: 30px;">Échange tes diamants contre de vraies cartes cadeaux !</p>
+                <div class="shop-grid">
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #ff9900, #ffcc00)">AMAZON<br>10€</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 5,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Amazon 10€', 5000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #00439c, #0070d1)">PSN<br>20€</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 10,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('PSN 20€', 10000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #171a21, #66c0f4)">STEAM<br>50€</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 25,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Steam 50€', 25000)">Échanger</button>
+                    </div>
+                    <div class="shop-item">
+                        <div class="gift-card" style="background:linear-gradient(45deg, #1DB954, #191414)">SPOTIFY<br>3 mois</div>
+                        <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 8,000</strong></p>
+                        <button class="btn-main" onclick="app.redeemCode('Spotify 3 mois', 8000)">Échanger</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL DE PAIEMENT -->
+    <div id="payment-overlay" class="payment-overlay">
+        <div class="payment-modal">
+            <button class="btn-close" onclick="app.closePayment()">×</button>
+            
+            <div class="payment-header">
+                <h3>Acheter des Diamants</h3>
+                <div class="diamond-amount" id="payment-amount">💎 0</div>
+                <div class="diamond-price" id="payment-price">0.00€</div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p style="text-align: center; color: #94a3b8; margin-bottom: 15px;">Choisis ton mode de paiement :</p>
+                <button class="payment-method" onclick="app.showPaymentForm('card')">
+                    💳 Carte Bancaire
+                </button>
+                <button class="payment-method" onclick="app.showPaymentForm('paypal')">
+                    <span style="color: #0070BA;">P</span><span style="color: #003087;">P</span> PayPal
+                </button>
+                <button class="payment-method" onclick="app.showPaymentForm('crypto')">
+                    ₿ Cryptomonnaie
+                </button>
+            </div>
+
+            <!-- Formulaire Carte Bancaire -->
+            <form id="card-form" class="payment-form" onsubmit="app.processPayment(event, 'card')">
+                <div class="form-group">
+                    <label>Numéro de carte</label>
+                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date d'expiration</label>
+                        <input type="text" placeholder="MM/AA" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="text" placeholder="123" maxlength="3" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nom sur la carte</label>
+                    <input type="text" placeholder="JEAN DUPONT" required>
+                </div>
+                <button type="submit" class="btn-main">Payer <span id="card-price">0.00€</span></button>
+            </form>
+
+            <!-- Formulaire PayPal -->
+            <form id="paypal-form" class="payment-form" onsubmit="app.processPayment(event, 'paypal')">
+                <div class="form-group">
+                    <label>Email PayPal</label>
+                    <input type="email" placeholder="ton@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe PayPal</label>
+                    <input type="password" placeholder="Ton mot de passe" required>
+                </div>
+                <button type="submit" class="btn-main">Continuer avec PayPal</button>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px; text-align: center;">
+                    Tu seras redirigé vers PayPal pour finaliser
+                </p>
+            </form>
+
+            <!-- Formulaire Crypto -->
+            <form id="crypto-form" class="payment-form" onsubmit="app.processPayment(event, 'crypto')">
+                <div class="form-group">
+                    <label>Cryptomonnaie</label>
+                    <select style="width: 100%; padding: 14px; background: rgba(15, 23, 42, 0.8); border: 2px solid #334155; color: white; border-radius: 8px;" required>
+                        <option value="btc">Bitcoin (BTC)</option>
+                        <option value="eth">Ethereum (ETH)</option>
+                        <option value="usdt">Tether (USDT)</option>
+                        <option value="bnb">Binance Coin (BNB)</option>
+                    </select>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 10px;">Adresse de paiement :</p>
+                    <p style="font-family: monospace; color: var(--primary); word-break: break-all; font-size: 0.9rem;">
+                        1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+                    </p>
+                </div>
+                <button type="submit" class="btn-main">J'ai effectué le paiement</button>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px; text-align: center;">
+                    Les diamants seront crédités après confirmation
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ANIMATION DE SUCCÈS -->
+    <div id="success-animation" class="success-animation">
+        <div class="success-checkmark"></div>
+        <div class="success-message">
+            <h2>Paiement Réussi !</h2>
+            <p>Tes diamants ont été ajoutés à ton compte</p>
+            <div class="success-diamonds" id="success-diamonds-amount">💎 0</div>
+            <button class="btn-main" onclick="app.closeSuccess()" style="max-width: 300px;">Continuer</button>
+        </div>
+    </div>
+
+    <script>
+        const ITEMS_DB = {
+            common: [
+                { id: 'c1', name: 'Vieux Caillou', val: 2 },
+                { id: 'c2', name: 'Bout de Bois', val: 3 },
+                { id: 'c3', name: 'Pièce Rouillée', val: 5 },
+                { id: 'c4', name: 'Plume Usée', val: 4 }
+            ],
+            rare: [
+                { id: 'r1', name: 'Dague en Fer', val: 20 },
+                { id: 'r2', name: 'Potion Bleue', val: 25 },
+                { id: 'r3', name: 'Cape Verte', val: 30 },
+                { id: 'r4', name: 'Grimoire Ancien', val: 35 }
+            ],
+            epic: [
+                { id: 'e1', name: 'Épée de Cristal', val: 80 },
+                { id: 'e2', name: 'Anneau Magique', val: 100 },
+                { id: 'e3', name: 'Casque Dragon', val: 120 },
+                { id: 'e4', name: 'Armure Enchantée', val: 140 }
+            ],
+            legendary: [
+                { id: 'l1', name: 'Trône d\'Or', val: 300 },
+                { id: 'l2', name: 'Sceptre Royal', val: 400 },
+                { id: 'l3', name: 'Orbe de Pouvoir', val: 450 }
+            ],
+            mythic: [
+                { id: 'm1', name: '💎 DIAMANT PUR', val: 1000 },
+                { id: 'm2', name: '👑 COURONNE DIVINE', val: 2000 },
+                { id: 'm3', name: '🌟 ÉTOILE ÉTERNELLE', val: 1500 }
+            ]
+        };
+
+        const CASE_PRICES = { common: 10, rare: 50, epic: 150, legendary: 500, mythic: 1500 };
+
+        const app = {
+            user: null,
+            marketData: [],
+            isSpinning: false,
+            currentPackage: null,
+            usersDB: {}, // Base de données locale des utilisateurs
+
+            init: function() {
+                // Charger les utilisateurs
+                const savedUsers = localStorage.getItem('dc_users');
+                this.usersDB = savedUsers ? JSON.parse(savedUsers) : {};
+
+                // Charger le marché
+                const savedMarket = localStorage.getItem('dc_market');
+                this.marketData = savedMarket ? JSON.parse(savedMarket) : [
+                    { id: Date.now(), seller: 'Bot_Alpha', item: ITEMS_DB.rare[0], price: 30, rarity: 'rare' },
+                    { id: Date.now()+1, seller: 'Bot_Beta', item: ITEMS_DB.epic[0], price: 90, rarity: 'epic' }
+                ];
+
+                // Vérifier si connecté
+                const currentUser = localStorage.getItem('dc_current_user');
+                if (currentUser) {
+                    this.user = JSON.parse(currentUser);
+                    this.showApp();
+                }
+            },
+
+            switchAuthTab: function(tab) {
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+                
+                event.target.classList.add('active');
+                document.getElementById(tab + '-form').classList.add('active');
+            },
+
+            register: function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('register-username').value.trim();
+                const email = document.getElementById('register-email').value.trim();
+                const password = document.getElementById('register-password').value;
+                const confirm = document.getElementById('register-confirm').value;
+
+                if (password !== confirm) {
+                    this.notify('Les mots de passe ne correspondent pas !', 'error');
+                    return;
+                }
+
+                if (this.usersDB[username]) {
+                    this.notify('Ce nom d\'utilisateur existe déjà !', 'error');
+                    return;
+                }
+
+                // Créer le compte
+                this.usersDB[username] = {
+                    username: username,
+                    email: email,
+                    password: password, // En production, il faudrait hasher le mot de passe
+                    diamonds: 200, // Bonus d'inscription
+                    inventory: [],
+                    createdAt: Date.now()
+                };
+
+                localStorage.setItem('dc_users', JSON.stringify(this.usersDB));
+                
+                this.notify('Compte créé avec succès ! 🎉', 'success');
+                
+                // Auto-connexion
+                this.user = {
+                    name: username,
+                    email: email,
+                    diamonds: 200,
+                    inventory: []
+                };
+                
+                this.saveUser();
+                this.showApp();
+                this.notify(`Bienvenue ${username} ! +200 💎 de bonus !`, 'success');
+            },
+
+            login: function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('login-username').value.trim();
+                const password = document.getElementById('login-password').value;
+
+                const userAccount = this.usersDB[username];
+                
+                if (!userAccount) {
+                    this.notify('Utilisateur introuvable !', 'error');
+                    return;
+                }
+
+                if (userAccount.password !== password) {
+                    this.notify('Mot de passe incorrect !', 'error');
+                    return;
+                }
+
+                // Connexion réussie
+                this.user = {
+                    name: username,
+                    email: userAccount.email,
+                    diamonds: userAccount.diamonds,
+                    inventory: userAccount.inventory || []
+                };
+
+                this.saveUser();
+                this.showApp();
+                this.notify(`Content de te revoir ${username} !`, 'success');
+            },
+
+            logout: function() {
+                localStorage.removeItem('dc_current_user');
+                location.reload();
+            },
+
+            saveUser: function() {
+                localStorage.setItem('dc_current_user', JSON.stringify(this.user));
+                
+                // Mettre à jour la base de données
+                if (this.usersDB[this.user.name]) {
+                    this.usersDB[this.user.name].diamonds = this.user.diamonds;
+                    this.usersDB[this.user.name].inventory = this.user.inventory;
+                    localStorage.setItem('dc_users', JSON.stringify(this.usersDB));
+                }
+                
+                localStorage.setItem('dc_market', JSON.stringify(this.marketData));
+                this.updateUI();
+            },
+
+            showApp: function() {
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                this.updateUI();
+                this.renderMarket();
+            },
+
+            updateUI: function() {
+                document.getElementById('user-name').innerText = this.user.name;
+                document.getElementById('user-diamonds').innerText = this.user.diamonds.toLocaleString();
+                this.renderInventory();
+            },
+
+            nav: function(screen) {
+                document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+                document.getElementById('sec-' + screen).classList.add('active');
+                
+                document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+                event.target.classList.add('active');
+
+                if (screen === 'market') {
+                    this.renderMarket();
+                }
+            },
+
+            openCase: function(type) {
+                if (this.isSpinning) return;
+                const cost = CASE_PRICES[type];
+                
+                if (this.user.diamonds < cost) {
+                    return this.notify("Pas assez de diamants ! Visite la boutique 💎", "error");
+                }
+
+                this.user.diamonds -= cost;
+                this.saveUser();
+
+                let pool = [];
+                if (type === 'common') pool = [...ITEMS_DB.common, ...ITEMS_DB.common, ...ITEMS_DB.rare];
+                if (type === 'rare') pool = [...ITEMS_DB.common, ...ITEMS_DB.rare, ...ITEMS_DB.rare, ...ITEMS_DB.epic];
+                if (type === 'epic') pool = [...ITEMS_DB.rare, ...ITEMS_DB.epic, ...ITEMS_DB.epic, ...ITEMS_DB.legendary];
+                if (type === 'legendary') pool = [...ITEMS_DB.epic, ...ITEMS_DB.legendary, ...ITEMS_DB.legendary, ...ITEMS_DB.mythic];
+                if (type === 'mythic') pool = [...ITEMS_DB.legendary, ...ITEMS_DB.mythic, ...ITEMS_DB.mythic];
+
+                const winner = pool[Math.floor(Math.random() * pool.length)];
+                
+                let rarity = 'common';
+                if (ITEMS_DB.rare.includes(winner)) rarity = 'rare';
+                if (ITEMS_DB.epic.includes(winner)) rarity = 'epic';
+                if (ITEMS_DB.legendary.includes(winner)) rarity = 'legendary';
+                if (ITEMS_DB.mythic.includes(winner)) rarity = 'mythic';
+
+                this.runRoulette(pool, winner, rarity);
+            },
+
+            runRoulette: function(pool, winner, winnerRarity) {
+                this.isSpinning = true;
+                const wrapper = document.getElementById('roulette-wrapper');
+                const strip = document.getElementById('roulette-strip');
+                const msg = document.getElementById('win-message');
+                
+                wrapper.style.display = 'block';
+                msg.innerHTML = '<span style="color: var(--gold)">🎲 Tirage en cours...</span>';
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateX(0)';
+                strip.innerHTML = '';
+
+                const itemsToShow = [];
+                for(let i=0; i<50; i++) {
+                    if (i === 40) {
+                        itemsToShow.push({item: winner, rarity: winnerRarity});
+                    } else {
+                        const randomItem = pool[Math.floor(Math.random() * pool.length)];
+                        let r = 'common';
+                        if(ITEMS_DB.rare.includes(randomItem)) r = 'rare'; 
+                        if(ITEMS_DB.epic.includes(randomItem)) r = 'epic';
+                        if(ITEMS_DB.legendary.includes(randomItem)) r = 'legendary';
+                        if(ITEMS_DB.mythic.includes(randomItem)) r = 'mythic';
+                        itemsToShow.push({item: randomItem, rarity: r});
+                    }
+                }
+
+                itemsToShow.forEach(obj => {
+                    const div = document.createElement('div');
+                    div.className = 'roulette-item';
+                    div.innerHTML = `
+                        <span style="color:var(--${obj.rarity}); font-size: 2rem;">★</span>
+                        <small style="color: #cbd5e1; margin-top: 5px;">${obj.item.name}</small>
+                    `;
+                    div.style.borderBottom = `4px solid var(--${obj.rarity})`;
+                    strip.appendChild(div);
+                });
+
+                setTimeout(() => {
+                    const itemWidth = 130;
+                    const offset = (40 * itemWidth) - (wrapper.clientWidth / 2) + (itemWidth / 2);
+                    
+                    strip.style.transition = 'transform 4s cubic-bezier(0.1, 0.9, 0.3, 1)';
+                    strip.style.transform = `translateX(-${offset}px)`;
+                }, 50);
+
+                setTimeout(() => {
+                    this.isSpinning = false;
+                    msg.innerHTML = `🎉 Gagné : <span style="color:var(--${winnerRarity}); font-weight: bold;">${winner.name}</span> ! (+${winner.val}💎)`;
+                    this.user.inventory.push({ ...winner, rarity: winnerRarity, uid: Date.now() });
+                    this.saveUser();
+                    this.notify(`✨ ${winner.name} ajouté à ton inventaire !`, 'success');
+                }, 4100);
+            },
+
+            renderInventory: function() {
+                const container = document.getElementById('inventory-list');
+                container.innerHTML = '';
+                
+                if (this.user.inventory.length === 0) {
+                    container.innerHTML = '<p style="color:grey; width:100%; text-align:center; padding: 40px;">Inventaire vide. Ouvre des caisses pour gagner des objets !</p>';
+                    return;
+                }
+
+                this.user.inventory.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = `item-card ${item.rarity}`;
+                    div.innerHTML = `
+                        <div style="font-size: 2rem; margin-bottom: 10px;">★</div>
+                        <strong style="display: block; margin-bottom: 5px;">${item.name}</strong>
+                        <small style="color: #94a3b8;">Valeur: ${item.val} 💎</small>
+                        <button class="btn-action btn-sell" onclick="app.sellSystem(${index})">Vendre ${item.val}💎</button>
+                        <button class="btn-action btn-market" onclick="app.showMarketForm(${index})">Vendre sur Marché</button>
+                        <div id="market-form-${index}" class="market-price-form">
+                            <input type="number" id="price-${index}" placeholder="Prix en 💎" min="${item.val}">
+                            <button class="btn-confirm" onclick="app.confirmMarketSale(${index})">✓</button>
+                            <button class="btn-cancel" onclick="app.cancelMarketForm(${index})">✗</button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            },
+
+            showMarketForm: function(index) {
+                document.getElementById(`market-form-${index}`).classList.add('active');
+            },
+
+            cancelMarketForm: function(index) {
+                document.getElementById(`market-form-${index}`).classList.remove('active');
+            },
+
+            confirmMarketSale: function(index) {
+                const priceInput = document.getElementById(`price-${index}`);
+                const price = parseInt(priceInput.value);
+                const item = this.user.inventory[index];
+
+                if (!price || price < item.val) {
+                    this.notify('Prix invalide ! Minimum: ' + item.val + '💎', 'error');
+                    return;
+                }
+
+                this.marketData.push({
+                    id: Date.now(),
+                    seller: this.user.name,
+                    item: item,
+                    price: price,
+                    rarity: item.rarity
+                });
+
+                this.user.inventory.splice(index, 1);
+                this.saveUser();
+                this.notify("✅ Objet mis en vente sur le marché !", 'success');
+            },
+
+            sellSystem: function(index) {
+                const item = this.user.inventory[index];
+                this.user.diamonds += item.val;
+                this.user.inventory.splice(index, 1);
+                this.saveUser();
+                this.notify(`💰 Vendu pour ${item.val}💎`, 'success');
+            },
+
+            renderMarket: function() {
+                const container = document.getElementById('market-list');
+                container.innerHTML = '';
+
+                if (this.marketData.length === 0) {
+                    container.innerHTML = '<p style="color:grey; width:100%; text-align:center; padding: 40px;">Aucune offre sur le marché pour le moment.</p>';
+                    return;
+                }
+
+                this.marketData.forEach((offer, index) => {
+                    const isMe = offer.seller === this.user.name;
+                    const div = document.createElement('div');
+                    div.className = `item-card ${offer.rarity}`;
+                    div.innerHTML = `
+                        <div style="font-size: 2rem; margin-bottom: 10px;">★</div>
+                        <strong style="display: block; margin-bottom: 5px;">${offer.item.name}</strong>
+                        <small style="color: #94a3b8; display: block; margin-bottom: 5px;">Vendeur: ${offer.seller}</small>
+                        <strong style="color:var(--gold); font-size: 1.1rem;">${offer.price} 💎</strong>
+                        ${isMe 
+                            ? `<button class="btn-action" disabled style="background:#333; cursor: not-allowed;">Ton offre</button>` 
+                            : `<button class="btn-action btn-buy" onclick="app.buyMarket(${index})">Acheter</button>`
+                        }
+                    `;
+                    container.appendChild(div);
+                });
+            },
+
+            buyMarket: function(index) {
+                const offer = this.marketData[index];
+                if (this.user.diamonds < offer.price) {
+                    return this.notify("💎 Pas assez de diamants !", "error");
+                }
+
+                this.user.diamonds -= offer.price;
+                this.user.inventory.push({ ...offer.item, rarity: offer.rarity, uid: Date.now() });
+                
+                this.marketData.splice(index, 1);
+                
+                this.saveUser();
+                this.renderMarket();
+                this.notify(`✅ Achat réussi : ${offer.item.name}`, 'success');
+            },
+
+            selectPackage: function(amount, price) {
+                this.currentPackage = { amount, price };
+                document.getElementById('payment-amount').innerText = `💎 ${amount.toLocaleString()}`;
+                document.getElementById('payment-price').innerText = `${price.toFixed(2)}€`;
+                document.getElementById('card-price').innerText = `${price.toFixed(2)}€`;
+                document.getElementById('payment-overlay').classList.add('active');
+            },
+
+            closePayment: function() {
+                document.getElementById('payment-overlay').classList.remove('active');
+                document.querySelectorAll('.payment-form').forEach(f => f.classList.remove('active'));
+            },
+
+            showPaymentForm: function(type) {
+                document.querySelectorAll('.payment-form').forEach(f => f.classList.remove('active'));
+                document.getElementById(type + '-form').classList.add('active');
+            },
+
+            processPayment: function(e, method) {
+                e.preventDefault();
+                
+                this.closePayment();
+                
+                // Simulation de traitement
+                setTimeout(() => {
+                    this.user.diamonds += this.currentPackage.amount;
+                    this.saveUser();
+                    
+                    document.getElementById('success-diamonds-amount').innerText = `💎 +${this.currentPackage.amount.toLocaleString()}`;
+                    document.getElementById('success-animation').classList.add('active');
+                    
+                    this.notify(`💎 ${this.currentPackage.amount.toLocaleString()} diamants ajoutés !`, 'success');
+                }, 500);
+            },
+
+            closeSuccess: function() {
+                document.getElementById('success-animation').classList.remove('active');
+            },
+
+            redeemCode: function(name, cost) {
+                if (this.user.diamonds < cost) {
+                    return this.notify(`Il te faut ${cost.toLocaleString()} diamants !`, "error");
+                }
+
+                this.user.diamonds -= cost;
+                this.saveUser();
+                
+                const code = Math.random().toString(36).substring(2, 10).toUpperCase() + "-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+                
+                // Afficher dans un message stylé
+                const codeDisplay = document.createElement('div');
+                codeDisplay.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: var(--bg-panel);
+                    padding: 40px;
+                    border-radius: 16px;
+                    border: 2px solid var(--gold);
+                    z-index: 500;
+                    text-align: center;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+                    animation: slideUp 0.4s ease;
+                `;
+                codeDisplay.innerHTML = `
+                    <h2 style="color: var(--gold); margin-bottom: 20px;">🎉 FÉLICITATIONS !</h2>
+                    <p style="margin-bottom: 15px; color: #cbd5e1;">Voici ta carte cadeau <strong>${name}</strong></p>
+                    <div style="background: rgba(0,0,0,0.5); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p style="font-size: 1.5rem; font-family: monospace; color: var(--primary); letter-spacing: 2px;">${code}</p>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 20px;">📋 Note bien ce code, il ne sera plus affiché !</p>
+                    <button class="btn-main" onclick="this.parentElement.remove()" style="max-width: 200px;">Fermer</button>
+                `;
+                document.body.appendChild(codeDisplay);
+                
+                this.notify("🎁 Carte cadeau récupérée !", "success");
+            },
+
+            notify: function(msg, type='info') {
+                const box = document.createElement('div');
+                box.className = 'toast';
+                box.innerText = msg;
+                if(type === 'error') box.style.borderLeftColor = 'var(--danger)';
+                if(type === 'success') box.style.borderLeftColor = 'var(--success)';
+                
+                document.getElementById('alert-container').appendChild(box);
+                setTimeout(() => box.remove(), 3500);
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
