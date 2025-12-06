@@ -69,6 +69,9 @@
             border: 1px solid var(--primary);
             font-weight: bold;
             color: var(--primary);
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         /* Layout */
@@ -691,6 +694,38 @@
             color: white;
         }
 
+        /* Withdrawal (Retrait) */
+        .withdraw-card {
+            background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(56,189,248,0.03));
+            border: 2px solid #334155;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .withdraw-row {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+        }
+
+        .withdraw-right {
+            background: var(--bg-panel);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #334155;
+            text-align: center;
+        }
+
+        .withdraw-summary {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
         /* Animations Keyframes */
         @keyframes fadeIn { 
             from { opacity: 0; } 
@@ -1152,8 +1187,9 @@
                 <button onclick="app.logout()" style="color:var(--danger)">Déconnexion</button>
             </nav>
             <div class="user-stats">
-                <span id="user-name" style="color: white; margin-right: 15px;"></span>
+                <span id="user-name" style="color: white; margin-right: 5px;"></span>
                 💎 <span id="user-diamonds">0</span>
+                <span style="color:#94a3b8;">≈ <span id="user-euros">0.00€</span></span>
             </div>
         </header>
 
@@ -1205,7 +1241,7 @@
                     <div class="case-card c-ultrapremium" onclick="app.openCase('ultrapremium')">
                         <div class="case-img" style="animation: spin 3s linear infinite;">⚡</div>
                         <h3>CAISSE ULTRA PREMIUM</h3>
-                        <p style="font-size:0.9rem; color:#00ffff; margin: 10px 0; text-shadow: 0 0 10px rgba(0,255,255,0.8);">💎 1,000,000 OU RIEN ! 💎</p>
+                        <p style="font-size:0.9rem; color:#00ffff; margin: 10px 0; text-shadow: 0 0 10px rgba(0,255,255,0.8);">💎 100,000 OU RIEN ! 💎</p>
                         <p style="font-size:0.8rem; color:#ff00ff; margin: 5px 0;">1 chance sur 1000</p>
                         <div class="price-tag">💎 25,000</div>
                     </div>
@@ -1354,11 +1390,68 @@
                 </div>
             </div>
 
-            <!-- SECTION CADEAUX -->
+            <!-- SECTION CADEAUX & RETRAIT -->
             <div id="sec-redeem" class="section">
                 <h2>🎁 Boutique Cadeaux</h2>
                 <p style="color: #94a3b8; margin-bottom: 30px;">Échange tes diamants contre de vraies cartes cadeaux !</p>
-                <div class="shop-grid">
+
+                <!-- NOUVEAU : RETRAIT / CONVERSION DIAMANTS -> EUROS -->
+                <div class="withdraw-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <h3 style="margin-bottom:5px; color:var(--primary);">Convertir des Diamants en Euros</h3>
+                            <p style="color:#cbd5e1; margin:0;">Taux estimé : <strong>500 💎 = 1€</strong>. Les fonds seront envoyés dans un délai de <strong>7 jours</strong> après validation. Fournis les informations nécessaires selon la méthode choisie.</p>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="color:#94a3b8; font-size:0.9rem;">Solde actuel</div>
+                            <div style="font-weight:bold; font-size:1.1rem;">💎 <span id="withdraw-balance">0</span></div>
+                            <div style="color:#cbd5e1;">≈ <span id="withdraw-balance-eur">0.00€</span></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:15px;" class="withdraw-row">
+                        <div>
+                            <form id="withdraw-form" onsubmit="app.requestWithdrawal(event)">
+                                <div class="form-group">
+                                    <label>Montant souhaité en €</label>
+                                    <input type="number" id="withdraw-eur" min="1" step="0.01" placeholder="Ex : 10.00" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Ou Montant en 💎 (sera converti)</label>
+                                    <input type="number" id="withdraw-diamonds" min="1" step="1" placeholder="Ex : 5000" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Méthode de paiement</label>
+                                    <select id="withdraw-method" onchange="app.toggleWithdrawFields()">
+                                        <option value="paypal">PayPal</option>
+                                        <option value="crypto">Cryptomonnaie</option>
+                                        <option value="bank">Carte / IBAN</option>
+                                    </select>
+                                </div>
+
+                                <div id="withdraw-fields"></div>
+
+                                <div style="display:flex; gap:10px; margin-top:10px;">
+                                    <button class="btn-main" type="submit" style="flex:1;">Demander le retrait</button>
+                                    <button type="button" class="btn-main" onclick="app.fillMaxWithdraw()" style="background:#333; width:140px;">Max</button>
+                                </div>
+
+                                <div class="withdraw-summary" id="withdraw-summary" style="display:none; margin-top:12px;"></div>
+                            </form>
+                        </div>
+
+                        <div class="withdraw-right">
+                            <h4 style="margin-bottom:8px;">Informations importantes</h4>
+                            <p style="color:#cbd5e1; font-size:0.95rem;">- Les retraits sont traités sous 7 jours ouvrés.<br>- Les informations fournies sont nécessaires pour vous payer (PayPal / Crypto / IBAN).<br>- Le système enregistre uniquement les demandes localement pour cette démonstration.</p>
+                            <div style="margin-top:10px;">
+                                <button class="btn-main" onclick="app.showMyWithdrawals()" style="background:var(--accent)">Mes demandes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="shop-grid" style="margin-top:20px;"> 
                     <div class="shop-item">
                         <div class="gift-card" style="background:linear-gradient(45deg, #ff9900, #ffcc00)">AMAZON<br>10€</div>
                         <p style="margin: 10px 0; font-size: 1.1rem;">Coût: <strong style="color: var(--gold)">💎 5,000</strong></p>
@@ -1530,6 +1623,9 @@
     </div>
 
     <script>
+        // Taux de conversion pour les retraits
+        const DIAMONDS_PER_EURO = 500; // 500 diamants = 1€
+
         const ITEMS_DB = {
             common: [
                 { id: 'c1', name: 'Vieux Caillou', val: 2 },
@@ -1577,7 +1673,7 @@
 
             ],
             ultrapremium: [
-                { id: 'ultra1', name: '🎰 JACKPOT ULTRA 💰', val: 1000000 },
+                { id: 'ultra1', name: '🎰 JACKPOT ULTRA 💰', val: 100000 },
                 { id: 'ultra_nothing1', name: '💀 VOUS AVEZ PERDU TOUT ! 💀', val: 0 }
             ]
         };
@@ -1591,6 +1687,7 @@
             isSpinning: false,
             currentPackage: null,
             usersDB: {}, // Base de données locale des utilisateurs
+            withdrawals: [],
 
             init: function() {
                 // Charger les utilisateurs
@@ -1603,58 +1700,63 @@
                     { id: Date.now(), seller: 'Bot_Alpha', item: ITEMS_DB.rare[0], price: 30, rarity: 'rare' },
                     { id: Date.now()+1, seller: 'Bot_Beta', item: ITEMS_DB.epic[0], price: 90, rarity: 'epic' }
                 ];
-// === BOTS MARKET AUTO ===
-setInterval(() => {
-    const botNames = ["Ares", "Nyx", "Kappa", "Zero"];
 
-    const randomBot = botNames[Math.floor(Math.random() * botNames.length)];
-    const rarityList = ["common", "rare", "epic", "legendary"];
-    const rarity = rarityList[Math.floor(Math.random() * rarityList.length)];
+                // Charger les retraits existants
+                const savedWithdrawals = localStorage.getItem('dc_withdrawals');
+                this.withdrawals = savedWithdrawals ? JSON.parse(savedWithdrawals) : [];
 
-    const pool = ITEMS_DB[rarity];
-    const item = pool[Math.floor(Math.random() * pool.length)];
+                // === BOTS MARKET AUTO ===
+                setInterval(() => {
+                    const botNames = ["Ares", "Nyx", "Kappa", "Zero"];
 
-    app.marketData.push({
-        id: Date.now(),
-        seller: randomBot,
-        item: item,
-        price: Math.floor(item.val * (1 + Math.random() * 1.5)),
-        rarity: rarity
-    });
+                    const randomBot = botNames[Math.floor(Math.random() * botNames.length)];
+                    const rarityList = ["common", "rare", "epic", "legendary"];
+                    const rarity = rarityList[Math.floor(Math.random() * rarityList.length)];
 
-    app.saveUser();
-}, 20000); // un bot ajoute une offre toutes les 20 sec
-// === BOTS QUI ACHÈTENT DES ITEMS ===
-setInterval(() => {
-    if (app.marketData.length === 0) return;
+                    const pool = ITEMS_DB[rarity];
+                    const item = pool[Math.floor(Math.random() * pool.length)];
 
-    const chance = Math.random();
-    if (chance < 0.4) return; // 40% de chance qu’un bot achète
+                    app.marketData.push({
+                        id: Date.now(),
+                        seller: randomBot,
+                        item: item,
+                        price: Math.floor(item.val * (1 + Math.random() * 1.5)),
+                        rarity: rarity
+                    });
 
-    const offers = app.marketData.filter(o => o.seller !== "BOT");
-    if (offers.length === 0) return;
+                    app.saveUser();
+                }, 20000); // un bot ajoute une offre toutes les 20 sec
+                // === BOTS QUI ACHÈTENT DES ITEMS ===
+                setInterval(() => {
+                    if (app.marketData.length === 0) return;
 
-    const pick = offers[Math.floor(Math.random() * offers.length)];
+                    const chance = Math.random();
+                    if (chance < 0.4) return; // 40% de chance qu’un bot achète
 
-    // Trouver propriétaire
-    const seller = app.usersDB[pick.seller];
-    if (seller) {
-        seller.diamonds += pick.price;
-        app.usersDB[pick.seller] = seller;
-        localStorage.setItem('dc_users', JSON.stringify(app.usersDB));
-    }
+                    const offers = app.marketData.filter(o => o.seller !== "BOT");
+                    if (offers.length === 0) return;
 
-    // Notif si c'est toi
-    if (pick.seller === app.user.name) {
-        app.notify(`🤖 Un bot a acheté ton item : +${pick.price}💎`, "success");
-        app.user.diamonds += pick.price;
-        app.saveUser();
-    }
+                    const pick = offers[Math.floor(Math.random() * offers.length)];
 
-    // Retirer l'offre
-    app.marketData = app.marketData.filter(o => o.id !== pick.id);
-    app.saveUser();
-}, 15000); // tentative d'achat bot toutes les 15 sec
+                    // Trouver propriétaire
+                    const seller = app.usersDB[pick.seller];
+                    if (seller) {
+                        seller.diamonds += pick.price;
+                        app.usersDB[pick.seller] = seller;
+                        localStorage.setItem('dc_users', JSON.stringify(app.usersDB));
+                    }
+
+                    // Notif si c'est toi
+                    if (pick.seller === app.user?.name) {
+                        app.notify(`🤖 Un bot a acheté ton item : +${pick.price}💎`, "success");
+                        app.user.diamonds += pick.price;
+                        app.saveUser();
+                    }
+
+                    // Retirer l'offre
+                    app.marketData = app.marketData.filter(o => o.id !== pick.id);
+                    app.saveUser();
+                }, 15000); // tentative d'achat bot toutes les 15 sec
 
                 // Vérifier si connecté
                 const currentUser = localStorage.getItem('dc_current_user');
@@ -1662,6 +1764,7 @@ setInterval(() => {
                     this.user = JSON.parse(currentUser);
                     this.showApp();
                 }
+                this.updateWithdrawBalanceUI();
             },
 
             switchAuthTab: function(tab) {
@@ -1764,6 +1867,7 @@ setInterval(() => {
                 }
                 
                 localStorage.setItem('dc_market', JSON.stringify(this.marketData));
+                localStorage.setItem('dc_withdrawals', JSON.stringify(this.withdrawals));
                 this.updateUI();
             },
 
@@ -1777,7 +1881,20 @@ setInterval(() => {
             updateUI: function() {
                 document.getElementById('user-name').innerText = this.user.name;
                 document.getElementById('user-diamonds').innerText = this.user.diamonds.toLocaleString();
+                this.updateEuroDisplay();
                 this.renderInventory();
+                this.updateWithdrawBalanceUI();
+            },
+
+            updateEuroDisplay: function() {
+                const euros = (this.user.diamonds / DIAMONDS_PER_EURO);
+                document.getElementById('user-euros').innerText = `${euros.toFixed(2)}€`;
+            },
+
+            updateWithdrawBalanceUI: function() {
+                const bal = this.user ? this.user.diamonds : 0;
+                document.getElementById('withdraw-balance').innerText = bal.toLocaleString();
+                document.getElementById('withdraw-balance-eur').innerText = `${(bal / DIAMONDS_PER_EURO).toFixed(2)}€`;
             },
 
             nav: function(screen) {
@@ -2163,6 +2280,187 @@ setInterval(() => {
                 setTimeout(() => box.remove(), 3500);
             },
 
+            // -----------------------
+            // Système de retrait
+            // -----------------------
+            toggleWithdrawFields: function() {
+                const method = document.getElementById('withdraw-method').value;
+                const container = document.getElementById('withdraw-fields');
+                container.innerHTML = '';
+
+                if (method === 'paypal') {
+                    container.innerHTML = `
+                        <div class="form-group">
+                            <label>Email PayPal</label>
+                            <input type="email" id="withdraw-paypal-email" placeholder="ton@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom complet (pour PayPal)</label>
+                            <input type="text" id="withdraw-paypal-name" placeholder="Jean Dupont" required>
+                        </div>
+                    `;
+                } else if (method === 'crypto') {
+                    container.innerHTML = `
+                        <div class="form-group">
+                            <label>Cryptomonnaie</label>
+                            <select id="withdraw-crypto-currency" style="width:100%; padding:12px; background:rgba(15,23,42,0.8); border:2px solid #334155; color:white; border-radius:8px;">
+                                <option value="btc">Bitcoin (BTC)</option>
+                                <option value="eth">Ethereum (ETH)</option>
+                                <option value="usdt">Tether (USDT)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Adresse de réception</label>
+                            <input type="text" id="withdraw-crypto-address" placeholder="Adresse crypto" required>
+                        </div>
+                    `;
+                } else if (method === 'bank') {
+                    container.innerHTML = `
+                        <div class="form-group">
+                            <label>Nom complet</label>
+                            <input type="text" id="withdraw-bank-name" placeholder="Jean Dupont" required>
+                        </div>
+                        <div class="form-group">
+                            <label>IBAN / RIB</label>
+                            <input type="text" id="withdraw-bank-iban" placeholder="FR76 3000 6000 0112 3456 7890 189" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Note (optionnel)</label>
+                            <input type="text" id="withdraw-bank-note" placeholder="Informations supplémentaires (ex: BIC)">
+                        </div>
+                    `;
+                }
+            },
+
+            fillMaxWithdraw: function() {
+                if (!this.user) return;
+                const maxEur = (this.user.diamonds / DIAMONDS_PER_EURO);
+                document.getElementById('withdraw-eur').value = maxEur.toFixed(2);
+                document.getElementById('withdraw-diamonds').value = this.user.diamonds;
+            },
+
+            requestWithdrawal: function(e) {
+                e.preventDefault();
+                if (!this.user) {
+                    return this.notify('Connecte-toi pour demander un retrait.', 'error');
+                }
+
+                const eurInput = parseFloat(document.getElementById('withdraw-eur').value || 0);
+                const diamondsInput = parseInt(document.getElementById('withdraw-diamonds').value || 0);
+
+                let euros = 0;
+                if (eurInput > 0) euros = parseFloat(eurInput.toFixed(2));
+                else if (diamondsInput > 0) euros = parseFloat((diamondsInput / DIAMONDS_PER_EURO).toFixed(2));
+                else return this.notify('Indique un montant en € ou en diamants.', 'error');
+
+                if (euros < 1) return this.notify('Montant minimum : 1€', 'error');
+
+                const requiredDiamonds = Math.ceil(euros * DIAMONDS_PER_EURO);
+
+                if (this.user.diamonds < requiredDiamonds) {
+                    return this.notify(`Pas assez de diamants. Il faut ${requiredDiamonds.toLocaleString()} 💎`, 'error');
+                }
+
+                const method = document.getElementById('withdraw-method').value;
+                const details = {};
+
+                if (method === 'paypal') {
+                    const email = document.getElementById('withdraw-paypal-email')?.value?.trim();
+                    const name = document.getElementById('withdraw-paypal-name')?.value?.trim();
+                    if (!email || !name) return this.notify('Remplis les informations PayPal.', 'error');
+                    details.paypalEmail = email;
+                    details.name = name;
+                } else if (method === 'crypto') {
+                    const curr = document.getElementById('withdraw-crypto-currency')?.value;
+                    const addr = document.getElementById('withdraw-crypto-address')?.value?.trim();
+                    if (!curr || !addr) return this.notify('Remplis les informations Crypto.', 'error');
+                    details.currency = curr;
+                    details.address = addr;
+                } else if (method === 'bank') {
+                    const name = document.getElementById('withdraw-bank-name')?.value?.trim();
+                    const iban = document.getElementById('withdraw-bank-iban')?.value?.trim();
+                    const note = document.getElementById('withdraw-bank-note')?.value?.trim();
+                    if (!name || !iban) return this.notify('Remplis le nom et l\'IBAN.', 'error');
+                    details.name = name;
+                    details.iban = iban;
+                    details.note = note;
+                }
+
+                // Déduire immédiatement les diamants
+                this.user.diamonds -= requiredDiamonds;
+
+                // Créer la demande
+                const requestedAt = Date.now();
+                const processDate = requestedAt + (7 * 24 * 60 * 60 * 1000); // +7 jours
+                const req = {
+                    id: 'W' + Date.now(),
+                    user: this.user.name,
+                    euros: euros,
+                    diamondsDeducted: requiredDiamonds,
+                    method: method,
+                    details: details,
+                    requestedAt: requestedAt,
+                    processDate: processDate,
+                    status: 'pending' // pending / processed
+                };
+
+                this.withdrawals.push(req);
+                this.saveUser();
+
+                // Afficher résumé modal simple
+                const summary = document.getElementById('withdraw-summary');
+                const date = new Date(processDate);
+                summary.style.display = 'block';
+                summary.innerHTML = `✅ Demande enregistrée : <strong>${euros.toFixed(2)}€</strong> (déduit ${requiredDiamonds.toLocaleString()} 💎). Traitement estimé le <strong>${date.toLocaleDateString()}</strong>. ID: ${req.id}`;
+                
+                this.notify(`Demande de retrait de ${euros.toFixed(2)}€ créée. ID: ${req.id}`, 'success');
+                document.getElementById('withdraw-form').reset();
+                this.toggleWithdrawFields(); // réinitialise les champs dynamiques
+                this.updateWithdrawBalanceUI();
+            },
+
+            showMyWithdrawals: function() {
+                const userRequests = this.withdrawals.filter(w => w.user === (this.user?.name || ''));
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
+                    background: rgba(0,0,0,0.8); z-index:800; padding: 20px;
+                `;
+                const box = document.createElement('div');
+                box.style.cssText = 'background:var(--bg-panel); padding:20px; border-radius:12px; width:100%; max-width:700px; max-height:80vh; overflow:auto; border:2px solid var(--primary);';
+                box.innerHTML = `<h3 style="color:var(--primary)">Mes demandes de retrait</h3>`;
+                if (userRequests.length === 0) {
+                    box.innerHTML += `<p style="color:#cbd5e1">Aucune demande pour le moment.</p>`;
+                } else {
+                    userRequests.slice().reverse().forEach(r => {
+                        const d = new Date(r.requestedAt);
+                        const pd = new Date(r.processDate);
+                        box.innerHTML += `
+                            <div style="background:rgba(0,0,0,0.25); padding:10px; margin:8px 0; border-radius:8px;">
+                                <div style="display:flex; justify-content:space-between;">
+                                    <div><strong>${r.euros.toFixed(2)}€</strong> — ${r.method.toUpperCase()}</div>
+                                    <div style="color:#94a3b8">${r.status.toUpperCase()}</div>
+                                </div>
+                                <div style="color:#cbd5e1; font-size:0.9rem;">
+                                    ID: ${r.id} • demandé: ${d.toLocaleString()} • estimé: ${pd.toLocaleDateString()}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'btn-main';
+                closeBtn.style.marginTop = '10px';
+                closeBtn.innerText = 'Fermer';
+                closeBtn.onclick = () => modal.remove();
+                box.appendChild(closeBtn);
+                modal.appendChild(box);
+                document.body.appendChild(modal);
+            },
+
+            // -----------------------
+            // Mines / autres fonctions (inchangées)
+            // -----------------------
             minesState: {
                 grid: [],
                 mines: [],
@@ -2353,6 +2651,13 @@ setInterval(() => {
         
         document.getElementById('mines-slider').addEventListener('input', function() {
             document.getElementById('mines-slider-value').innerText = this.value;
+        });
+
+        // Init dynamic fields for withdraw on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('withdraw-method')) {
+                app.toggleWithdrawFields();
+            }
         });
     </script>
 </body>
