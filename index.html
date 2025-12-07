@@ -1102,6 +1102,387 @@
             color: var(--danger);
         }
 
+        /* BLACKJACK STYLES */
+        .blackjack-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .blackjack-table {
+            flex: 1;
+            min-width: 400px;
+            background: linear-gradient(135deg, #0a3622, #0f6b3d);
+            border: 3px solid var(--gold);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.2);
+        }
+
+        .blackjack-player-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .player-label {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .blackjack-cards {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            min-height: 140px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            align-content: center;
+        }
+
+        .card {
+            background: white;
+            border: 3px solid var(--primary);
+            border-radius: 8px;
+            width: 70px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: cardFlip 0.5s ease;
+        }
+
+        @keyframes cardFlip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        .card-placeholder {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .player-value {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .blackjack-status {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .status-message {
+            color: #cbd5e1;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            min-height: 24px;
+        }
+
+        .result-message {
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.3rem;
+            min-height: 30px;
+        }
+
+        .blackjack-controls {
+            flex: 0 1 350px;
+            background: var(--bg-panel);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+        }
+
+        .bet-section {
+            margin-bottom: 25px;
+        }
+
+        .bet-section label {
+            display: block;
+            color: #cbd5e1;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .bet-input-group {
+            margin-bottom: 15px;
+        }
+
+        .bet-input-group input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .bet-presets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .bet-presets button {
+            padding: 10px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .bet-presets button:hover {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn-bj {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .btn-deal {
+            background: linear-gradient(135deg, var(--gold), var(--legendary));
+            color: #0f172a;
+            grid-column: 1 / -1;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .btn-deal:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-action:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+        }
+
+        .btn-action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .blackjack-stats {
+            display: grid;
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* SLOTS STYLES */
+        .slots-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .slots-machine {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 4px solid var(--gold);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(251, 191, 36, 0.25), inset 0 0 20px rgba(251, 191, 36, 0.1);
+        }
+
+        .slots-display {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .slots-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .slots-header h3 {
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+        }
+
+        .slots-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            perspective: 1000px;
+        }
+
+        .slot-reel {
+            position: relative;
+            width: 100px;
+            height: 150px;
+            background: #000;
+            border: 3px solid var(--primary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .reel-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            transition: transform 0.5s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .reel-item {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            flex-shrink: 0;
+        }
+
+        .reel-window {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            border: 3px solid var(--success);
+            border-top: 3px solid rgba(56, 189, 248, 0.3);
+            border-bottom: 3px solid rgba(56, 189, 248, 0.3);
+            box-shadow: inset 0 0 10px rgba(74, 222, 128, 0.2);
+            pointer-events: none;
+        }
+
+        .winline {
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 15px 0;
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        .slots-message {
+            text-align: center;
+            min-height: 40px;
+            margin-bottom: 20px;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+            animation: messageFloat 0.5s ease;
+        }
+
+        @keyframes messageFloat {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .slots-controls {
+            background: var(--bg-panel);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            min-width: 280px;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-spin {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--gold), var(--legendary));
+            color: #0f172a;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
+        }
+
+        .btn-spin:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 50px rgba(251, 191, 36, 0.8);
+        }
+
+        .btn-spin:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-spin:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .slots-stats {
+            display: grid;
+            gap: 12px;
+        }
+
         @media (max-width: 768px) {
             .mines-container {
                 flex-direction: column;
@@ -1179,7 +1560,9 @@
             <div class="logo">💎 The Royal Casino 💎</div>
             <nav>
                 <button onclick="app.nav('cases')" class="active">Caisses</button>
-                <button onclick="app.nav('mines')" style="animation: neonGlow 2s ease-in-out infinite; color: #00ffff;">⚡ Mines</button>
+                <button onclick="app.nav('mines')">⚡ Mines</button>
+                <button onclick="app.nav('blackjack')">🎴 Blackjack</button>
+                <button onclick="app.nav('slots')">🎰 Slots</button>
                 <button onclick="app.nav('inventory')">Inventaire</button>
                 <button onclick="app.nav('market')">Marché</button>
                 <button onclick="app.nav('shop')">💎 Shop</button>
@@ -1327,6 +1710,172 @@
                 </div>
             </div>
 
+            <!-- SECTION BLACKJACK -->
+            <div id="sec-blackjack" class="section">
+                <h2>🎴 Blackjack</h2>
+                
+                <div class="blackjack-container">
+                    <div class="blackjack-table">
+                        <!-- Dealer Section -->
+                        <div class="blackjack-player-section">
+                            <div class="player-label">Croupier (Dealer)</div>
+                            <div class="blackjack-cards" id="dealer-cards">
+                                <div class="card-placeholder">Cartes du croupier</div>
+                            </div>
+                            <div class="player-value">Valeur: <span id="dealer-value">0</span></div>
+                        </div>
+
+                        <!-- Game Status -->
+                        <div class="blackjack-status">
+                            <div id="game-status" class="status-message"></div>
+                            <div id="game-result" class="result-message"></div>
+                        </div>
+
+                        <!-- Player Section -->
+                        <div class="blackjack-player-section">
+                            <div class="player-label">Votre Main</div>
+                            <div class="blackjack-cards" id="player-cards">
+                                <div class="card-placeholder">Vos cartes</div>
+                            </div>
+                            <div class="player-value">Valeur: <span id="player-value">0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="blackjack-controls">
+                        <div class="bet-section">
+                            <label>Mise (Diamants) 💎</label>
+                            <div class="bet-input-group">
+                                <input type="number" id="blackjack-bet" placeholder="Entrez votre mise" min="1" value="100">
+                                <div class="bet-presets">
+                                    <button onclick="app.setBJBet(50)">50💎</button>
+                                    <button onclick="app.setBJBet(100)">100💎</button>
+                                    <button onclick="app.setBJBet(500)">500💎</button>
+                                    <button onclick="app.setBJBet(1000)">1K💎</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="bj-deal" class="btn-bj btn-deal" onclick="app.blackjackDeal()">🎲 Distribuer</button>
+                            <button id="bj-hit" class="btn-bj btn-action" onclick="app.blackjackHit()" disabled>Tirer</button>
+                            <button id="bj-stand" class="btn-bj btn-action" onclick="app.blackjackStand()" disabled>Rester</button>
+                            <button id="bj-double" class="btn-bj btn-action" onclick="app.blackjackDouble()" disabled>Doubler</button>
+                        </div>
+
+                        <div class="blackjack-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Balance:</span>
+                                <span class="stat-value" id="bj-balance">0</span> 💎
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mise Actuelle:</span>
+                                <span class="stat-value" id="bj-current-bet">0</span> 💎
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Gain Potentiel:</span>
+                                <span class="stat-value" id="bj-potential-win">0</span> 💎
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION SLOTS -->
+            <div id="sec-slots" class="section">
+                <h2>🎰 Machine à Sous</h2>
+                
+                <div class="slots-container">
+                    <div class="slots-machine">
+                        <!-- Slots Display -->
+                        <div class="slots-display">
+                            <div class="slots-header">
+                                <h3>Slots Gagnante</h3>
+                            </div>
+                            <div class="slots-grid" id="slots-grid">
+                                <div class="slot-reel">
+                                    <div class="reel-container" id="reel-0">
+                                        <div class="reel-item">🍎</div>
+                                        <div class="reel-item">🍊</div>
+                                        <div class="reel-item">🍋</div>
+                                        <div class="reel-item">🍒</div>
+                                        <div class="reel-item">💎</div>
+                                        <div class="reel-item">👑</div>
+                                        <div class="reel-item">🎰</div>
+                                        <div class="reel-item">🍎</div>
+                                    </div>
+                                    <div class="reel-window"></div>
+                                </div>
+                                <div class="slot-reel">
+                                    <div class="reel-container" id="reel-1">
+                                        <div class="reel-item">🍎</div>
+                                        <div class="reel-item">🍊</div>
+                                        <div class="reel-item">🍋</div>
+                                        <div class="reel-item">🍒</div>
+                                        <div class="reel-item">💎</div>
+                                        <div class="reel-item">👑</div>
+                                        <div class="reel-item">🎰</div>
+                                        <div class="reel-item">🍎</div>
+                                    </div>
+                                    <div class="reel-window"></div>
+                                </div>
+                                <div class="slot-reel">
+                                    <div class="reel-container" id="reel-2">
+                                        <div class="reel-item">🍎</div>
+                                        <div class="reel-item">🍊</div>
+                                        <div class="reel-item">🍋</div>
+                                        <div class="reel-item">🍒</div>
+                                        <div class="reel-item">💎</div>
+                                        <div class="reel-item">👑</div>
+                                        <div class="reel-item">🎰</div>
+                                        <div class="reel-item">🍎</div>
+                                    </div>
+                                    <div class="reel-window"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Winline -->
+                        <div class="winline"></div>
+
+                        <!-- Win Message -->
+                        <div id="slots-message" class="slots-message"></div>
+
+                        <!-- Controls -->
+                        <div class="slots-controls">
+                            <div class="bet-section">
+                                <label>Mise par Ligne 💎</label>
+                                <div class="bet-input-group">
+                                    <input type="number" id="slots-bet" placeholder="Mise" min="1" value="10">
+                                    <div class="bet-presets">
+                                        <button onclick="app.setSlotsBet(10)">10💎</button>
+                                        <button onclick="app.setSlotsBet(25)">25💎</button>
+                                        <button onclick="app.setSlotsBet(50)">50💎</button>
+                                        <button onclick="app.setSlotsBet(100)">100💎</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="slots-spin" class="btn-spin" onclick="app.slotsSpin()">🎰 SPIN</button>
+
+                            <div class="slots-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Balance:</span>
+                                    <span class="stat-value" id="slots-balance">0</span> 💎
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Mise Totale:</span>
+                                    <span class="stat-value" id="slots-total-bet">0</span> 💎
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Dernier Gain:</span>
+                                    <span class="stat-value" id="slots-last-win">0</span> 💎
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- SECTION INVENTAIRE -->
             <div id="sec-inventory" class="section">
@@ -1443,7 +1992,7 @@
 
                         <div class="withdraw-right">
                             <h4 style="margin-bottom:8px;">Informations importantes</h4>
-                            <p style="color:#cbd5e1; font-size:0.95rem;">- Les retraits sont traités sous 7 jours ouvrés.<br>- Les informations fournies sont nécessaires pour vous payer (PayPal / Crypto / IBAN).<br>- Merci d'utiliser notre casino !!!</p>
+                            <p style="color:#cbd5e1; font-size:0.95rem;">- Les retraits sont traités sous 7 jours ouvrés.<br>- Les informations fournies sont nécessaires pour vous payer (PayPal / Crypto / IBAN).<br>- Le système enregistre uniquement les demandes localement pour cette démonstration.</p>
                             <div style="margin-top:10px;">
                                 <button class="btn-main" onclick="app.showMyWithdrawals()" style="background:var(--accent)">Mes demandes</button>
                             </div>
@@ -1910,6 +2459,14 @@
                 
                 if (screen === 'mines') {
                     this.updateMinesUI();
+                }
+                
+                if (screen === 'blackjack') {
+                    this.updateBJUI();
+                }
+                
+                if (screen === 'slots') {
+                    this.updateSlotsUI();
                 }
             },
 
@@ -2644,6 +3201,344 @@
                 document.querySelectorAll('.mine-cell').forEach(cell => {
                     cell.disabled = true;
                 });
+            },
+
+            blackjackState: {
+                deck: [],
+                playerHand: [],
+                dealerHand: [],
+                bet: 0,
+                gameActive: false,
+                canDouble: false
+            },
+
+            initBlackjack: function() {
+                this.blackjackState = {
+                    deck: [],
+                    playerHand: [],
+                    dealerHand: [],
+                    bet: 0,
+                    gameActive: false,
+                    canDouble: false
+                };
+            },
+
+            createDeck: function() {
+                const suits = ['♠', '♥', '♦', '♣'];
+                const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+                const deck = [];
+                for (let i = 0; i < 6; i++) {
+                    for (let suit of suits) {
+                        for (let value of values) {
+                            deck.push({ suit, value });
+                        }
+                    }
+                }
+                return deck.sort(() => Math.random() - 0.5);
+            },
+
+            dealCard: function(hand) {
+                if (this.blackjackState.deck.length === 0) {
+                    this.blackjackState.deck = this.createDeck();
+                }
+                hand.push(this.blackjackState.deck.pop());
+            },
+
+            calcHandValue: function(hand) {
+                let value = 0;
+                let aces = 0;
+                for (let card of hand) {
+                    if (card.value === 'A') {
+                        aces++;
+                        value += 11;
+                    } else if (['J', 'Q', 'K'].includes(card.value)) {
+                        value += 10;
+                    } else {
+                        value += parseInt(card.value);
+                    }
+                }
+                while (value > 21 && aces > 0) {
+                    value -= 10;
+                    aces--;
+                }
+                return value;
+            },
+
+            renderBlackjackCards: function() {
+                const playerCardsDiv = document.getElementById('player-cards');
+                const dealerCardsDiv = document.getElementById('dealer-cards');
+                
+                playerCardsDiv.innerHTML = this.blackjackState.playerHand.map(card => 
+                    `<div class="card">${card.value}${card.suit}</div>`
+                ).join('');
+                
+                dealerCardsDiv.innerHTML = this.blackjackState.dealerHand.map(card => 
+                    `<div class="card">${card.value}${card.suit}</div>`
+                ).join('');
+                
+                document.getElementById('player-value').innerText = this.calcHandValue(this.blackjackState.playerHand);
+                document.getElementById('dealer-value').innerText = this.calcHandValue(this.blackjackState.dealerHand);
+            },
+
+            setBJBet: function(amount) {
+                document.getElementById('blackjack-bet').value = amount;
+                this.updateBJUI();
+            },
+
+            updateBJUI: function() {
+                document.getElementById('bj-balance').innerText = this.user.diamonds;
+                const bet = parseInt(document.getElementById('blackjack-bet').value) || 0;
+                document.getElementById('bj-current-bet').innerText = bet;
+                document.getElementById('bj-potential-win').innerText = Math.floor(bet * 1.5);
+            },
+
+            blackjackDeal: function() {
+                const betInput = document.getElementById('blackjack-bet');
+                const bet = parseInt(betInput.value);
+                
+                if (!bet || bet <= 0) {
+                    this.notify('Entrez une mise valide !', 'error');
+                    return;
+                }
+                
+                if (this.user.diamonds < bet) {
+                    this.notify('Pas assez de diamants !', 'error');
+                    return;
+                }
+                
+                this.user.diamonds -= bet;
+                this.blackjackState.bet = bet;
+                this.blackjackState.gameActive = true;
+                
+                this.initBlackjack();
+                this.blackjackState.deck = this.createDeck();
+                this.blackjackState.bet = bet;
+                
+                this.dealCard(this.blackjackState.playerHand);
+                this.dealCard(this.blackjackState.dealerHand);
+                this.dealCard(this.blackjackState.playerHand);
+                this.dealCard(this.blackjackState.dealerHand);
+                
+                this.renderBlackjackCards();
+                
+                document.getElementById('bj-deal').disabled = true;
+                document.getElementById('bj-hit').disabled = false;
+                document.getElementById('bj-stand').disabled = false;
+                
+                const playerValue = this.calcHandValue(this.blackjackState.playerHand);
+                if (playerValue === 21) {
+                    this.blackjackStand();
+                } else {
+                    document.getElementById('bj-double').disabled = false;
+                    this.blackjackState.canDouble = true;
+                }
+                
+                document.getElementById('game-status').innerText = '🎮 À votre tour de jouer...';
+                document.getElementById('game-result').innerText = '';
+                this.saveUser();
+                this.updateBJUI();
+            },
+
+            blackjackHit: function() {
+                this.dealCard(this.blackjackState.playerHand);
+                this.renderBlackjackCards();
+                
+                const playerValue = this.calcHandValue(this.blackjackState.playerHand);
+                if (playerValue > 21) {
+                    this.blackjackEnd(false);
+                }
+            },
+
+            blackjackStand: function() {
+                document.getElementById('bj-hit').disabled = true;
+                document.getElementById('bj-stand').disabled = true;
+                document.getElementById('bj-double').disabled = true;
+                
+                while (this.calcHandValue(this.blackjackState.dealerHand) < 17) {
+                    this.dealCard(this.blackjackState.dealerHand);
+                }
+                
+                this.renderBlackjackCards();
+                
+                const playerValue = this.calcHandValue(this.blackjackState.playerHand);
+                const dealerValue = this.calcHandValue(this.blackjackState.dealerHand);
+                
+                if (dealerValue > 21) {
+                    this.blackjackEnd(true, 'VICTOIRE ! Le croupier a dépassé 21 !');
+                } else if (playerValue > dealerValue) {
+                    this.blackjackEnd(true, 'VICTOIRE ! Vous battez le croupier !');
+                } else if (playerValue === dealerValue) {
+                    this.blackjackEnd(null, 'ÉGALITÉ ! Pari remboursé.');
+                } else {
+                    this.blackjackEnd(false, 'DÉFAITE ! Le croupier gagne.');
+                }
+            },
+
+            blackjackDouble: function() {
+                const currentBet = this.blackjackState.bet;
+                if (this.user.diamonds < currentBet) {
+                    this.notify('Pas assez de diamants pour doubler !', 'error');
+                    return;
+                }
+                
+                this.user.diamonds -= currentBet;
+                this.blackjackState.bet *= 2;
+                this.blackjackState.canDouble = false;
+                document.getElementById('bj-double').disabled = true;
+                
+                this.dealCard(this.blackjackState.playerHand);
+                this.renderBlackjackCards();
+                
+                const playerValue = this.calcHandValue(this.blackjackState.playerHand);
+                if (playerValue > 21) {
+                    this.blackjackEnd(false);
+                } else {
+                    this.blackjackStand();
+                }
+                this.saveUser();
+                this.updateBJUI();
+            },
+
+            blackjackEnd: function(win, message = '') {
+                this.blackjackState.gameActive = false;
+                document.getElementById('bj-hit').disabled = true;
+                document.getElementById('bj-stand').disabled = true;
+                document.getElementById('bj-double').disabled = true;
+                document.getElementById('bj-deal').disabled = false;
+                
+                const betInput = document.getElementById('blackjack-bet');
+                betInput.disabled = false;
+                
+                if (win === true) {
+                    const winnings = Math.floor(this.blackjackState.bet * 1.5);
+                    this.user.diamonds += winnings + this.blackjackState.bet;
+                    document.getElementById('game-result').innerText = `✨ ${message} +${winnings} 💎`;
+                    this.notify(`Gagné ${winnings} 💎 !`, 'success');
+                } else if (win === false) {
+                    document.getElementById('game-result').innerText = `💥 ${message || 'Vous avez perdu votre mise.'}`;
+                    this.notify(`Perdu ${this.blackjackState.bet} 💎...`, 'error');
+                } else {
+                    this.user.diamonds += this.blackjackState.bet;
+                    document.getElementById('game-result').innerText = `🤝 ${message}`;
+                    this.notify(`Pari remboursé.`, 'success');
+                }
+                
+                this.saveUser();
+                this.updateBJUI();
+            },
+
+            slotsMachineState: {
+                isSpinning: false,
+                lastWin: 0,
+                totalBets: 0
+            },
+
+            setSlotsBet: function(amount) {
+                document.getElementById('slots-bet').value = amount;
+                this.updateSlotsUI();
+            },
+
+            updateSlotsUI: function() {
+                document.getElementById('slots-balance').innerText = this.user.diamonds;
+                const bet = parseInt(document.getElementById('slots-bet').value) || 0;
+                document.getElementById('slots-total-bet').innerText = bet * 3;
+                document.getElementById('slots-last-win').innerText = this.slotsMachineState.lastWin;
+            },
+
+            slotsSpin: function() {
+                if (this.slotsMachineState.isSpinning) return;
+                
+                const betInput = document.getElementById('slots-bet');
+                const bet = parseInt(betInput.value);
+                
+                if (!bet || bet <= 0) {
+                    this.notify('Entrez une mise valide !', 'error');
+                    return;
+                }
+                
+                const totalBet = bet * 3;
+                if (this.user.diamonds < totalBet) {
+                    this.notify('Pas assez de diamants !', 'error');
+                    return;
+                }
+                
+                this.user.diamonds -= totalBet;
+                this.slotsMachineState.totalBets = totalBet;
+                this.slotsMachineState.isSpinning = true;
+                
+                document.getElementById('slots-spin').disabled = true;
+                document.getElementById('slots-message').innerHTML = '';
+                
+                const reels = [0, 1, 2];
+                const symbols = ['🍎', '🍊', '🍋', '🍒', '💎', '👑', '🎰'];
+                const results = reels.map(() => symbols[Math.floor(Math.random() * symbols.length)]);
+                
+                let completed = 0;
+                reels.forEach((reel, index) => {
+                    const duration = 2000 + (index * 200);
+                    setTimeout(() => {
+                        this.spinReel(reel, results[index], duration);
+                    }, index * 150);
+                });
+                
+                setTimeout(() => {
+                    this.checkSlotsWin(results, bet);
+                    document.getElementById('slots-spin').disabled = false;
+                    this.slotsMachineState.isSpinning = false;
+                }, 3000);
+            },
+
+            spinReel: function(reelIndex, targetSymbol, duration) {
+                const reel = document.getElementById(`reel-${reelIndex}`);
+                const symbols = ['🍎', '🍊', '🍋', '🍒', '💎', '👑', '🎰'];
+                const targetIndex = symbols.indexOf(targetSymbol);
+                
+                let currentIndex = 0;
+                let spins = 0;
+                const spinsPerSecond = 10;
+                const totalSpins = Math.floor((duration / 1000) * spinsPerSecond);
+                
+                const spinInterval = setInterval(() => {
+                    spins++;
+                    currentIndex = (currentIndex + 1) % symbols.length;
+                    reel.style.transform = `translateY(-${currentIndex * 50}px)`;
+                    
+                    if (spins >= totalSpins) {
+                        clearInterval(spinInterval);
+                        reel.style.transform = `translateY(-${targetIndex * 50}px)`;
+                    }
+                }, 1000 / spinsPerSecond);
+            },
+
+            checkSlotsWin: function(results, bet) {
+                const [r1, r2, r3] = results;
+                let winAmount = 0;
+                const symbols = ['🍎', '🍊', '🍋', '🍒', '💎', '👑', '🎰'];
+                const multipliers = {
+                    '🍎': 2, '🍊': 2, '🍋': 3, '🍒': 3,
+                    '💎': 5, '👑': 10, '🎰': 50
+                };
+                
+                const totalBet = bet * 3;
+                
+                if (r1 === r2 && r2 === r3) {
+                    winAmount = totalBet * multipliers[r1];
+                    document.getElementById('slots-message').innerHTML = `🎉 <strong>JACKPOT!</strong> ${r1}${r1}${r1} +${winAmount} 💎`;
+                    this.notify(`JACKPOT! +${winAmount} 💎 !`, 'success');
+                } else if (r1 === r2 || r2 === r3 || r1 === r3) {
+                    const pair = (r1 === r2) ? r1 : (r2 === r3) ? r2 : r1;
+                    winAmount = totalBet * Math.floor(multipliers[pair] / 2);
+                    document.getElementById('slots-message').innerHTML = `🎊 Vous avez une paire! +${winAmount} 💎`;
+                    this.notify(`Paire gagnante! +${winAmount} 💎`, 'success');
+                } else {
+                    document.getElementById('slots-message').innerHTML = `😢 Pas gagnant cette fois... Réessayez!`;
+                    this.notify('Pas gagnant...', 'error');
+                }
+                
+                this.user.diamonds += winAmount;
+                this.slotsMachineState.lastWin = winAmount;
+                this.saveUser();
+                this.updateSlotsUI();
             }
         };
 
