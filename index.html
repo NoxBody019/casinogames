@@ -998,6 +998,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-bottom: 20px;
         }
 
         .btn-mines {
@@ -1102,109 +1103,131 @@
             color: var(--danger);
         }
 
-        /* BLACKJACK STYLES */
-        .blackjack-container {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
+        /* TUTORIAL & WELCOME OVERLAYS */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 900;
+            padding: 20px;
         }
-
-        .blackjack-table {
-            flex: 1;
-            min-width: 400px;
-            background: linear-gradient(135deg, #0a3622, #0f6b3d);
-            border: 3px solid var(--gold);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.2);
+        .overlay.active { display: flex; }
+        .welcome-box, .tutorial-box {
+            background: var(--bg-panel);
+            padding: 28px;
+            border-radius: 12px;
+            max-width: 900px;
+            width: 100%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
+        .welcome-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: center; }
+        .welcome-title { color: var(--primary); font-size: 1.8rem; margin-bottom: 10px; }
+        .welcome-copy { color: #cbd5e1; margin-bottom: 8px; }
+        .tutorial-steps { min-height: 160px; }
+        .tutorial-step { display: none; }
+        .tutorial-step.active { display: block; animation: fadeIn 0.3s ease; }
+        .tutorial-controls { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; }
+        .tutorial-indicators { display:flex; gap:6px; margin-top:10px; }
+        .tutorial-dot { width:10px; height:10px; border-radius:50%; background:#334155; }
+        .tutorial-dot.active { background:var(--primary); box-shadow: 0 0 8px rgba(56,189,248,0.6); }
 
-        .blackjack-player-section {
-            margin-bottom: 30px;
-            text-align: center;
-        }
+        /* small helper */
+        .muted { color: #94a3b8; font-size: 0.95rem; }
 
-        .player-label {
-            color: var(--gold);
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .blackjack-cards {
+        /* ROULETTE STYLES */
+        .roulette-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            min-height: 140px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            align-content: center;
+            padding: 20px;
         }
 
-        .card {
-            background: white;
-            border: 3px solid var(--primary);
-            border-radius: 8px;
-            width: 70px;
-            height: 100px;
+        .roulette-game {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .roulette-wheel-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 40px;
+        }
+
+        .roulette-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 0;
+            border: 8px solid var(--gold);
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .roulette-segment {
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 3rem;
             font-weight: bold;
-            font-size: 1.5rem;
-            color: #000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            animation: cardFlip 0.5s ease;
+            cursor: default;
+            transition: transform 0.1s;
+            border: 2px solid rgba(0, 0, 0, 0.3);
         }
 
-        @keyframes cardFlip {
-            0% { transform: rotateY(0deg); }
-            50% { transform: rotateY(90deg); }
-            100% { transform: rotateY(0deg); }
+        .roulette-segment.red {
+            background: #f87171;
+            color: white;
         }
 
-        .card-placeholder {
-            color: #94a3b8;
-            font-size: 0.9rem;
+        .roulette-segment.black {
+            background: #1f2937;
+            color: white;
         }
 
-        .player-value {
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 1.1rem;
+        .roulette-segment.gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0f172a;
         }
 
-        .blackjack-status {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            margin: 20px 0;
+        .roulette-wheel.spinning .roulette-segment {
+            animation: wheelSpin 0.05s linear;
         }
 
-        .status-message {
-            color: #cbd5e1;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            min-height: 24px;
+        @keyframes wheelSpin {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        .result-message {
-            color: var(--success);
-            font-weight: bold;
-            font-size: 1.3rem;
-            min-height: 30px;
+        .roulette-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid var(--gold);
+            z-index: 10;
+            filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.8));
         }
 
-        .blackjack-controls {
-            flex: 0 1 350px;
-            background: var(--bg-panel);
-            border: 2px solid var(--primary);
-            border-radius: 15px;
+        .roulette-betting {
+            background: rgba(0, 0, 0, 0.3);
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
         .bet-section {
@@ -1214,290 +1237,195 @@
         .bet-section label {
             display: block;
             color: #cbd5e1;
-            font-weight: 600;
             margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .bet-input-group {
-            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .bet-input-group input {
-            width: 100%;
-            margin-bottom: 10px;
+        #roulette-bet {
+            flex: 1;
+            min-width: 100px;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #334155;
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        #roulette-bet:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .bet-presets {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .bet-presets button {
-            padding: 10px;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2));
-            border: 2px solid var(--primary);
+            padding: 10px 12px;
+            background: rgba(56, 189, 248, 0.2);
+            border: 1px solid var(--primary);
             color: var(--primary);
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.2s;
         }
 
         .bet-presets button:hover {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            transform: translateY(-2px);
+            background: rgba(56, 189, 248, 0.3);
+            transform: scale(1.05);
         }
 
-        .action-buttons {
+        .color-buttons {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .btn-bj {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        .btn-deal {
-            background: linear-gradient(135deg, var(--gold), var(--legendary));
-            color: #0f172a;
-            grid-column: 1 / -1;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
-        }
-
-        .btn-deal:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
-        }
-
-        .btn-action {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-        }
-
-        .btn-action:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
-        }
-
-        .btn-action:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .blackjack-stats {
-            display: grid;
-            gap: 12px;
-        }
-
-        .stat-item {
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid var(--primary);
-        }
-
-        .stat-label {
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-
-        .stat-value {
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        /* SLOTS STYLES */
-        .slots-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .slots-machine {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            border: 4px solid var(--gold);
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 20px 50px rgba(251, 191, 36, 0.25), inset 0 0 20px rgba(251, 191, 36, 0.1);
-        }
-
-        .slots-display {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            border: 3px solid var(--primary);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
-        }
-
-        .slots-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .slots-header h3 {
-            color: var(--gold);
-            font-size: 1.3rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
-        }
-
-        .slots-grid {
-            display: flex;
-            justify-content: center;
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            perspective: 1000px;
         }
 
-        .slot-reel {
-            position: relative;
-            width: 100px;
-            height: 150px;
-            background: #000;
-            border: 3px solid var(--primary);
+        .color-btn {
+            padding: 20px;
+            border: 3px solid;
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(0,0,0,0.8);
-        }
-
-        .reel-container {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
             display: flex;
             flex-direction: column;
-            width: 100%;
-            transition: transform 0.5s ease;
-            position: absolute;
-            top: 0;
-            left: 0;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .reel-item {
-            width: 100%;
-            height: 50px;
-            display: flex;
+        .color-btn.red {
+            background: rgba(248, 113, 113, 0.2);
+            border-color: #f87171;
+            color: #f87171;
+        }
+
+        .color-btn.red:hover {
+            background: rgba(248, 113, 113, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(248, 113, 113, 0.4);
+        }
+
+        .color-btn.black {
+            background: rgba(31, 41, 55, 0.4);
+            border-color: #6b7280;
+            color: #d1d5db;
+        }
+
+        .color-btn.black:hover {
+            background: rgba(31, 41, 55, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(107, 114, 128, 0.4);
+        }
+
+        .color-btn.gold {
+            background: rgba(251, 191, 36, 0.2);
+            border-color: #fbbf24;
+            color: #fbbf24;
+        }
+
+        .color-btn.gold:hover {
+            background: rgba(251, 191, 36, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .color-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .roulette-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            min-height: 40px;
+            display: none;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            background: linear-gradient(135deg, #1e293b, #334155);
-            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-            flex-shrink: 0;
+            animation: messageSlide 0.3s ease;
         }
 
-        .reel-window {
-            position: absolute;
-            top: 50px;
-            left: 0;
-            right: 0;
-            height: 50px;
-            border: 3px solid var(--success);
-            border-top: 3px solid rgba(56, 189, 248, 0.3);
-            border-bottom: 3px solid rgba(56, 189, 248, 0.3);
-            box-shadow: inset 0 0 10px rgba(74, 222, 128, 0.2);
-            pointer-events: none;
+        .roulette-message.active {
+            display: flex;
         }
 
-        .winline {
-            height: 3px;
-            background: linear-gradient(to right, transparent, var(--gold), transparent);
-            margin: 15px 0;
-            box-shadow: 0 0 20px var(--gold);
-        }
-
-        .slots-message {
-            text-align: center;
-            min-height: 40px;
-            margin-bottom: 20px;
+        .roulette-message.success {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid var(--success);
             color: var(--success);
-            font-weight: bold;
             font-size: 1.2rem;
-            animation: messageFloat 0.5s ease;
         }
 
-        @keyframes messageFloat {
-            0% { opacity: 0; transform: translateY(-10px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .roulette-message.danger {
+            background: rgba(248, 113, 113, 0.1);
+            border: 2px solid var(--danger);
+            color: var(--danger);
+            font-size: 1.2rem;
         }
 
-        .slots-controls {
+        .roulette-stats {
             background: var(--bg-panel);
-            border: 2px solid var(--primary);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            min-width: 280px;
-            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
-        }
-
-        .btn-spin {
-            width: 100%;
             padding: 20px;
-            background: linear-gradient(135deg, var(--gold), var(--legendary));
-            color: #0f172a;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
-        }
-
-        .btn-spin:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 0 50px rgba(251, 191, 36, 0.8);
-        }
-
-        .btn-spin:active:not(:disabled) {
-            transform: scale(0.98);
-        }
-
-        .btn-spin:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .slots-stats {
+            border-radius: 10px;
+            border: 2px solid var(--accent);
             display: grid;
-            gap: 12px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
         }
 
-        @media (max-width: 768px) {
-            .mines-container {
-                flex-direction: column;
+        .roulette-stats .stat-item {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .roulette-stats .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .roulette-stats .stat-value {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .color-buttons {
+                grid-template-columns: 1fr;
             }
 
-            .mines-sidebar {
-                width: 100%;
+            .roulette-wheel-wrapper {
+                width: 200px;
+                height: 200px;
+                margin-bottom: 30px;
             }
 
-            .mines-game {
-                min-width: 100%;
+            .roulette-stats {
+                grid-template-columns: 1fr;
             }
 
-            .mine-cell {
-                font-size: 1.5rem;
+            .roulette-game {
+                padding: 15px;
             }
         }
     </style>
@@ -1563,10 +1491,10 @@
                 <button onclick="app.nav('mines')">⚡ Mines</button>
                 <button onclick="app.nav('blackjack')">🎴 Blackjack</button>
                 <button onclick="app.nav('slots')">🎰 Slots</button>
-                <button onclick="app.nav('inventory')">Inventaire</button>
-                <button onclick="app.nav('market')">Marché</button>
+                <button onclick="app.nav('roulette')">🎡 Roulette</button>
                 <button onclick="app.nav('shop')">💎 Shop</button>
                 <button onclick="app.nav('redeem')" style="color:var(--gold)">🎁 Cadeaux</button>
+                <button onclick="app.showTutorial(true)" style="color:#94a3b8">📘 Tutoriel</button>
                 <button onclick="app.logout()" style="color:var(--danger)">🚪 Déconnexion</button>
             </nav>
             <div class="user-stats">
@@ -1877,18 +1805,79 @@
                 </div>
             </div>
 
-            <!-- SECTION INVENTAIRE -->
-            <div id="sec-inventory" class="section">
-                <h2>Mon Inventaire</h2>
-                <p style="color: #94a3b8; margin-bottom: 20px;">Vends tes objets rapidement ou mets-les sur le marché pour plus de profit !</p>
-                <div id="inventory-list" class="item-grid"></div>
-            </div>
+            <!-- SECTION ROULETTE -->
+            <div id="sec-roulette" class="section">
+                <h2>🎡 Roulette</h2>
+                
+                <div class="roulette-container">
+                    <div class="roulette-game">
+                        <!-- Wheel -->
+                        <div class="roulette-wheel-wrapper">
+                            <div class="roulette-wheel" id="roulette-wheel">
+                                <div class="roulette-segment red">🔴</div>
+                                <div class="roulette-segment black">⚫</div>
+                                <div class="roulette-segment gold">⭐</div>
+                                <div class="roulette-segment red">🔴</div>
+                                <div class="roulette-segment black">⚫</div>
+                                <div class="roulette-segment gold">⭐</div>
+                            </div>
+                            <div class="roulette-pointer"></div>
+                        </div>
 
-            <!-- SECTION MARCHÉ -->
-            <div id="sec-market" class="section">
-                <h2>Marché des Joueurs</h2>
-                <p style="color: #94a3b8; margin-bottom: 20px;">Achète les objets des autres joueurs à prix négocié !</p>
-                <div id="market-list" class="item-grid"></div>
+                        <!-- Bet Section -->
+                        <div class="roulette-betting">
+                            <div class="bet-section">
+                                <label>Mise 💎</label>
+                                <div class="bet-input-group">
+                                    <input type="number" id="roulette-bet" placeholder="Mise" min="1" value="10">
+                                    <div class="bet-presets">
+                                        <button onclick="app.setRouletteBet(10)">10💎</button>
+                                        <button onclick="app.setRouletteBet(25)">25💎</button>
+                                        <button onclick="app.setRouletteBet(50)">50💎</button>
+                                        <button onclick="app.setRouletteBet(100)">100💎</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="color-buttons">
+                                <button class="color-btn red" onclick="app.rouletteBet('red')">
+                                    <span style="font-size: 1.5rem;">🔴</span>
+                                    <span>ROUGE</span>
+                                    <span style="font-size: 0.8rem;">x2</span>
+                                </button>
+                                <button class="color-btn black" onclick="app.rouletteBet('black')">
+                                    <span style="font-size: 1.5rem;">⚫</span>
+                                    <span>NOIR</span>
+                                    <span style="font-size: 0.8rem;">x2</span>
+                                </button>
+                                <button class="color-btn gold" onclick="app.rouletteBet('gold')">
+                                    <span style="font-size: 1.5rem;">⭐</span>
+                                    <span>OR</span>
+                                    <span style="font-size: 0.8rem;">x14</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Result -->
+                        <div id="roulette-message" class="roulette-message"></div>
+
+                        <!-- Stats -->
+                        <div class="roulette-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Balance:</span>
+                                <span class="stat-value" id="roulette-balance">0</span> 💎
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mise Actuelle:</span>
+                                <span class="stat-value" id="roulette-bet-amount">0</span> 💎
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Couleur:</span>
+                                <span class="stat-value" id="roulette-color-selected">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- SECTION SHOP DIAMANTS -->
@@ -1896,7 +1885,8 @@
                 <h2>💎 Boutique de Diamants</h2>
                 <p style="color: #94a3b8; margin-bottom: 30px;">Achète des diamants pour ouvrir plus de caisses !</p>
                 
-                <div class="diamond-packages">
+                <div class="diamond-packages" id="diamond-packages">
+                    <!-- Existing packs (kept for compatibility) -->
                     <div class="diamond-package">
                         <h3>Starter Pack</h3>
                         <div class="diamond-amount">💎 500</div>
@@ -1935,6 +1925,71 @@
                         <div class="diamond-price">199.99€</div>
                         <p style="color: #94a3b8; margin-bottom: 15px;">Riche a l'état pure !!</p>
                         <button class="btn-main" onclick="app.selectPackage(50000, 199.99)">Acheter</button>
+                    </div>
+
+                    <!-- NEW: Enormous / Mega packs -->
+                    <div class="diamond-package" style="border-color: var(--legendary);">
+                        <h3>Pack Énorme</h3>
+                        <div class="diamond-amount">💎 100,000</div>
+                        <div class="diamond-price">299.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Pack énorme avec bonus aléatoire</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'enorme-100k', amount:100000, price:299.99, title:'Pack Énorme', bonus:'+5% chance de légendaire'})">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package featured" style="border-color:var(--mythic);">
+                        <h3>GIGA PACK</h3>
+                        <div class="diamond-amount">💎 250,000</div>
+                        <div class="diamond-price">599.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Très gros pack, bonus légendaire garanti (petite chance)</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'giga-250k', amount:250000, price:599.99, title:'GIGA PACK', bonus:'Chances augmentées'})">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package" style="border-color: #00ffff;">
+                        <h3>PACK TITAN - MÉGA</h3>
+                        <div class="diamond-amount">💎 1,000,000</div>
+                        <div class="diamond-price">1999.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Pack TITAN — pour les vrais collectionneurs</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'titan-1m', amount:1000000, price:1999.99, title:'PACK TITAN', bonus:'Drops légendaires garantis x1'})">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package" style="border-color: #00ffff;">
+                        <h3>MEGA ULTRA - ÉDITION LIMITÉE</h3>
+                        <div class="diamond-amount">💎 5,000,000</div>
+                        <div class="diamond-price">4999.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Le pack ultime — très rare, énorme bonus</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'mega-ultra', amount:5000000, price:4999.99, title:'MEGA ULTRA', bonus:'Bonus légendaire + items uniques'})">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package" style="border-color: #ff00ff;">
+                        <h3>INFINITY PACK</h3>
+                        <div class="diamond-amount">💎 10,000,000</div>
+                        <div class="diamond-price">9999.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">L'infini commence ici</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'infinity-10m', amount:10000000, price:9999.99, title:'INFINITY PACK', bonus:'Accès illimité aux drops'})">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package featured" style="border-color: #ff00ff; box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);">
+                        <h3>GODLIKE COLLECTION</h3>
+                        <div class="diamond-amount">💎 20,000,000</div>
+                        <div class="diamond-price">14999.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Seulement pour les vrais dieux du jeu</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'godlike-20m', amount:20000000, price:14999.99, title:'GODLIKE COLLECTION', bonus:'VIP status + double XP'})">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package" style="border-color: #ff6b6b;">
+                        <h3>DRAGON'S HOARD</h3>
+                        <div class="diamond-amount">💎 50,000,000</div>
+                        <div class="diamond-price">29999.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Le trésor du dragon ancien</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'dragon-50m', amount:50000000, price:29999.99, title:'DRAGON HOARD', bonus:'Items de légende garantis'})">Acheter</button>
+                    </div>
+
+                    <div class="diamond-package" style="border-color: #ff00ff; box-shadow: 0 0 50px rgba(255, 0, 255, 0.8);">
+                        <h3>COSMIQUE SUPRÊME</h3>
+                        <div class="diamond-amount">💎 100,000,000</div>
+                        <div class="diamond-price">49999.99€</div>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Au-delà des limites du temps et de l'espace</p>
+                        <button class="btn-main" onclick="app.selectPackage({ id:'cosmic-100m', amount:100000000, price:49999.99, title:'COSMIQUE SUPRÊME', bonus:'Items mythiques x5 garantis'})">Acheter</button>
                     </div>
                 </div>
             </div>
@@ -2070,6 +2125,111 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- WELCOME OVERLAY (affiche explicative) -->
+    <div id="welcome-overlay" class="overlay">
+        <div class="welcome-box">
+            <div class="welcome-grid">
+                <div>
+                    <div class="welcome-title">Bienvenue sur The Royal Casino</div>
+                    <p class="welcome-copy">Ici tu peux ouvrir des caisses, jouer à des mini-jeux (Mines, Blackjack, Slots) et échanger tes diamants contre de vraies cartes cadeaux. Les diamants sont la monnaie du site : gagne-les en jouant ou achète-les dans la boutique.</p>
+                    <ul class="muted">
+                        <li><strong>Diamants (💎)</strong> : monnaie pour ouvrir des caisses et acheter des cadeaux.</li>
+                        <li><strong>Caisses</strong> : achète et ouvre pour gagner des objets, certains très rares.</li>
+                        <li><strong>Marché</strong> : vends ou achète des objets entre joueurs.</li>
+                        <li><strong>Retraits</strong> : convertis tes diamants en euros (processus manuel, délai ~7 jours).</li>
+                    </ul>
+
+                    <div style="margin-top:18px; display:flex; gap:10px;">
+                        <button class="btn-main" onclick="app.showTutorial(true)">Démarrer le tutoriel</button>
+                        <button class="btn-main" style="background:#333" onclick="app.closeWelcome()">Commencer à jouer</button>
+                    </div>
+                </div>
+
+                <div style="text-align:center;">
+                    <div style="font-size: 4rem; margin-bottom: 12px;">💎</div>
+                    <div class="muted" style="margin-bottom:10px;">Conseil rapide</div>
+                    <div style="background: rgba(0,0,0,0.2); padding:12px; border-radius:8px;">
+                        <p style="margin-bottom:8px;"><strong>Astuce :</strong> Ouvre d'abord des caisses communes pour te faire une réserve d'objets à vendre puis investis dans des packs lorsque tu veux monter en gamme.</p>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <label style="display:flex; align-items:center; gap:8px; justify-content:center;">
+                            <input type="checkbox" id="welcome-dontshow" /> <span class="muted">Ne plus afficher cette affiche</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TUTORIAL OVERLAY -->
+    <div id="tutorial-overlay" class="overlay">
+        <div class="tutorial-box">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="color:var(--primary)">Tutoriel rapide</h2>
+                <button class="btn-close" onclick="app.closeTutorial()">×</button>
+            </div>
+
+            <div class="tutorial-steps">
+                <div class="tutorial-step" data-step="1">
+                    <h3>1 — À quoi servent les diamants ?</h3>
+                    <p class="muted">Les diamants (💎) sont la monnaie principale. Tu peux :</p>
+                    <ul class="muted">
+                        <li>Acheter des caisses et des packs dans la boutique.</li>
+                        <li>Placer des mises dans les jeux (Mines, Blackjack, Slots).</li>
+                        <li>Échanger contre des cartes cadeaux via la boutique Cadeaux.</li>
+                    </ul>
+                </div>
+
+                <div class="tutorial-step" data-step="2">
+                    <h3>2 — Comment miser</h3>
+                    <p class="muted">Choisis ta mise dans le jeu voulu, confirme la partie.</p>
+                    <ul class="muted">
+                        <li>Si tu gagnes, tes diamants augmentent (gain calculé selon le jeu).</li>
+                        <li>Si tu perds, la mise est perdue.</li>
+                        <li>Utilise le bouton "Encaisser" dans Mines pour récupérer tes gains avant de risquer une nouvelle case.</li>
+                    </ul>
+                </div>
+
+                <div class="tutorial-step" data-step="3">
+                    <h3>3 — La boutique et les packs</h3>
+                    <p class="muted">La boutique contient des packs standards et des packs énormes :</p>
+                    <ul class="muted">
+                        <li>Les packs énormes (ex : Pack Énorme, Giga Pack, Pack Titan) donnent beaucoup de diamants et parfois des bonus rares.</li>
+                        <li>Les packs limités peuvent contenir des drops légendaires ou des items exclusifs.</li>
+                        <li>Achète en fonction de ton budget et de ce que tu veux débloquer.</li>
+                    </ul>
+                </div>
+
+                <div class="tutorial-step" data-step="4">
+                    <h3>4 — Inventaire & Marché</h3>
+                    <p class="muted">Les objets gagnés dans les caisses vont dans ton inventaire :</p>
+                    <ul class="muted">
+                        <li>Vends immédiatement un objet pour obtenir des diamants.</li>
+                        <li>Ou mets-le sur le marché pour peut-être obtenir plus (les bots achètent aussi).</li>
+                    </ul>
+                </div>
+
+                <div class="tutorial-step" data-step="5">
+                    <h3>5 — Retraits & sécurité</h3>
+                    <p class="muted">Tu peux demander un retrait : 500 💎 = 1€. Les retraits prennent du temps et doivent être traités.</p>
+                    <ul class="muted">
+                        <li>Ne partage jamais ton mot de passe.</li>
+                        <li>En production, les paiements doivent être sécurisés (Stripe/PayPal, hashing des mots de passe).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
+                <div class="tutorial-indicators" id="tutorial-indicators"></div>
+                <div class="tutorial-controls">
+                    <button class="btn-main" id="tutorial-prev" style="background:#333" onclick="app.tutorialPrev()">Précédent</button>
+                    <button class="btn-main" id="tutorial-next" onclick="app.tutorialNext()">Suivant</button>
+                    <button class="btn-main" id="tutorial-done" style="display:none;" onclick="app.closeTutorial()">Terminé</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL DE PAIEMENT -->
@@ -2349,7 +2509,9 @@
                     password: password, // En production, il faudrait hasher le mot de passe
                     diamonds: 200, // Bonus d'inscription
                     inventory: [],
-                    createdAt: Date.now()
+                    createdAt: Date.now(),
+                    seenWelcome: false,
+                    seenTutorial: false
                 };
 
                 localStorage.setItem('dc_users', JSON.stringify(this.usersDB));
@@ -2361,12 +2523,17 @@
                     name: username,
                     email: email,
                     diamonds: 200,
-                    inventory: []
+                    inventory: [],
+                    seenWelcome: false,
+                    seenTutorial: false
                 };
                 
                 this.saveUser();
                 this.showApp();
                 this.notify(`Bienvenue ${username} ! +200 💎 de bonus !`, 'success');
+
+                // Forcer l'affiche de bienvenue & tutoriel pour nouveaux comptes
+                this.showWelcome(true);
             },
 
             login: function(e) {
@@ -2392,12 +2559,19 @@
                     name: username,
                     email: userAccount.email,
                     diamonds: userAccount.diamonds,
-                    inventory: userAccount.inventory || []
+                    inventory: userAccount.inventory || [],
+                    seenWelcome: !!userAccount.seenWelcome,
+                    seenTutorial: !!userAccount.seenTutorial
                 };
 
                 this.saveUser();
                 this.showApp();
                 this.notify(`Content de te revoir ${username} !`, 'success');
+
+                // Show welcome if user never saw it
+                if (!this.user.seenWelcome) {
+                    this.showWelcome();
+                }
             },
 
             logout: function() {
@@ -2406,12 +2580,15 @@
             },
 
             saveUser: function() {
+                if (!this.user) return;
                 localStorage.setItem('dc_current_user', JSON.stringify(this.user));
                 
                 // Mettre à jour la base de données
                 if (this.usersDB[this.user.name]) {
                     this.usersDB[this.user.name].diamonds = this.user.diamonds;
                     this.usersDB[this.user.name].inventory = this.user.inventory;
+                    this.usersDB[this.user.name].seenWelcome = !!this.user.seenWelcome;
+                    this.usersDB[this.user.name].seenTutorial = !!this.user.seenTutorial;
                     localStorage.setItem('dc_users', JSON.stringify(this.usersDB));
                 }
                 
@@ -2425,9 +2602,15 @@
                 document.getElementById('app-container').classList.remove('hidden');
                 this.updateUI();
                 this.renderMarket();
+
+                // If user hasn't seen welcome, show it
+                if (this.user && !this.user.seenWelcome) {
+                    this.showWelcome();
+                }
             },
 
             updateUI: function() {
+                if (!this.user) return;
                 document.getElementById('user-name').innerText = this.user.name;
                 document.getElementById('user-diamonds').innerText = this.user.diamonds.toLocaleString();
                 this.updateEuroDisplay();
@@ -2442,13 +2625,16 @@
 
             updateWithdrawBalanceUI: function() {
                 const bal = this.user ? this.user.diamonds : 0;
-                document.getElementById('withdraw-balance').innerText = bal.toLocaleString();
-                document.getElementById('withdraw-balance-eur').innerText = `${(bal / DIAMONDS_PER_EURO).toFixed(2)}€`;
+                const wb = document.getElementById('withdraw-balance');
+                if (wb) wb.innerText = bal.toLocaleString();
+                const we = document.getElementById('withdraw-balance-eur');
+                if (we) we.innerText = `${(bal / DIAMONDS_PER_EURO).toFixed(2)}€`;
             },
 
             nav: function(screen) {
                 document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-                document.getElementById('sec-' + screen).classList.add('active');
+                const target = document.getElementById('sec-' + screen);
+                if (target) target.classList.add('active');
                 
                 document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
                 event.target.classList.add('active');
@@ -2468,248 +2654,123 @@
                 if (screen === 'slots') {
                     this.updateSlotsUI();
                 }
+                
+                if (screen === 'roulette') {
+                    this.updateRouletteUI();
+                }
             },
 
-            openCase: function(type) {
-                if (this.isSpinning) return;
-                const cost = CASE_PRICES[type];
-                
-                if (this.user.diamonds < cost) {
-                    return this.notify("Pas assez de diamants ! Visite la boutique 💎", "error");
+            // -----------------------
+            // WELCOME & TUTORIAL
+            // -----------------------
+            showWelcome: function(force = false) {
+                if (!this.user) {
+                    // For non-logged visitors, still show welcome once per browser session
+                    const globalSeen = localStorage.getItem('dc_seen_welcome_global');
+                    if (!force && globalSeen) return;
+                    document.getElementById('welcome-overlay').classList.add('active');
+                    return;
                 }
-
-                this.user.diamonds -= cost;
-                this.saveUser();
-
-                let pool = [];
-                if (type === 'common') pool = [...ITEMS_DB.common, ...ITEMS_DB.common, ...ITEMS_DB.rare];
-                if (type === 'rare') pool = [...ITEMS_DB.common, ...ITEMS_DB.rare, ...ITEMS_DB.rare, ...ITEMS_DB.epic];
-                if (type === 'epic') pool = [...ITEMS_DB.rare, ...ITEMS_DB.epic, ...ITEMS_DB.epic, ...ITEMS_DB.legendary];
-                if (type === 'legendary') pool = [...ITEMS_DB.epic, ...ITEMS_DB.legendary, ...ITEMS_DB.legendary, ...ITEMS_DB.mythic];
-                if (type === 'mythic') pool = [...ITEMS_DB.legendary, ...ITEMS_DB.mythic, ...ITEMS_DB.mythic];
-                if (type === 'ultrapremium') {
-                    const chanceDeLaVie = Math.random() * 100;
-                    if (chanceDeLaVie < 1) {
-                        pool = [ITEMS_DB.ultrapremium[0]];
-                    } else {
-                        pool = [ITEMS_DB.ultrapremium[1]];
-                    }
-                }
-
-                const winner = pool[Math.floor(Math.random() * pool.length)];
-                
-                let rarity = 'common';
-                if (ITEMS_DB.rare.includes(winner)) rarity = 'rare';
-                if (ITEMS_DB.epic.includes(winner)) rarity = 'epic';
-                if (ITEMS_DB.legendary.includes(winner)) rarity = 'legendary';
-                if (ITEMS_DB.mythic.includes(winner)) rarity = 'mythic';
-                if (ITEMS_DB.ultrapremium.includes(winner)) rarity = 'ultrapremium';
-
-                this.runRoulette(pool, winner, rarity, type);
+                if (!force && this.user.seenWelcome) return;
+                document.getElementById('welcome-overlay').classList.add('active');
             },
 
-            getFreeCase: function() {
-                const now = Date.now();
-
-                if (now < nextFreeCase) {
-                    const reste = Math.ceil((nextFreeCase - now) / 60000);
-                    return this.notify(`⏳ Reviens dans ${reste} min pour ton coffre gratuit !`, "error");
-                }
-
-                nextFreeCase = now + (10 * 60 * 1000);
-                localStorage.setItem('dc_freecase_time', nextFreeCase);
-
-                this.openCase("common");
-                this.notify("🎁 Caisse gratuite obtenue !", "success");
-            },
-
-            runRoulette: function(pool, winner, winnerRarity, caseType = 'common') {
-                this.isSpinning = true;
-                const wrapper = document.getElementById('roulette-wrapper');
-                const strip = document.getElementById('roulette-strip');
-                const msg = document.getElementById('win-message');
-                
-                wrapper.style.display = 'block';
-                
-                if (caseType === 'ultrapremium') {
-                    msg.innerHTML = '<span style="color: #00ffff; text-shadow: 0 0 20px rgba(0,255,255,1); font-size: 1.2rem; font-weight: bold;">⚡ TIRAGE ULTRA PREMIUM ⚡</span>';
-                    wrapper.style.background = 'linear-gradient(to bottom, #000033, #001a1a)';
-                    wrapper.style.boxShadow = '0 0 50px rgba(0,255,255,0.8), 0 0 100px rgba(255,0,255,0.6)';
-                } else {
-                    msg.innerHTML = '<span style="color: var(--gold)">🎲 Tirage en cours...</span>';
-                }
-                
-                strip.style.transition = 'none';
-                strip.style.transform = 'translateX(0)';
-                strip.innerHTML = '';
-
-                const itemsToShow = [];
-                for(let i=0; i<50; i++) {
-                    if (i === 40) {
-                        itemsToShow.push({item: winner, rarity: winnerRarity});
-                    } else {
-                        const randomItem = pool[Math.floor(Math.random() * pool.length)];
-                        let r = 'common';
-                        if(ITEMS_DB.rare.includes(randomItem)) r = 'rare'; 
-                        if(ITEMS_DB.epic.includes(randomItem)) r = 'epic';
-                        if(ITEMS_DB.legendary.includes(randomItem)) r = 'legendary';
-                        if(ITEMS_DB.mythic.includes(randomItem)) r = 'mythic';
-                        if(ITEMS_DB.ultrapremium.includes(randomItem)) r = 'ultrapremium';
-                        itemsToShow.push({item: randomItem, rarity: r});
-                    }
-                }
-
-                itemsToShow.forEach(obj => {
-                    const div = document.createElement('div');
-                    div.className = 'roulette-item';
-                    let glowStyle = '';
-                    if (obj.rarity === 'ultrapremium') {
-                        glowStyle = 'text-shadow: 0 0 20px rgba(0,255,255,1), 0 0 10px rgba(255,0,255,0.8);';
-                    }
-                    div.innerHTML = `
-                        <span style="color:var(--${obj.rarity}); font-size: 2rem; ${glowStyle}">★</span>
-                        <small style="color: #cbd5e1; margin-top: 5px;">${obj.item.name}</small>
-                    `;
-                    div.style.borderBottom = `4px solid var(--${obj.rarity})`;
-                    strip.appendChild(div);
-                });
-
-                setTimeout(() => {
-                    const itemWidth = 130;
-                    const offset = (40 * itemWidth) - (wrapper.clientWidth / 2) + (itemWidth / 2);
-                    
-                    strip.style.transition = 'transform 4s cubic-bezier(0.1, 0.9, 0.3, 1)';
-                    strip.style.transform = `translateX(-${offset}px)`;
-                }, 50);
-
-                setTimeout(() => {
-                    this.isSpinning = false;
-                    let displayRarity = winnerRarity;
-                    if (winnerRarity === 'ultrapremium') {
-                        displayRarity = '#00ffff';
-                    }
-                    msg.innerHTML = `🎉 Gagné : <span style="color:${displayRarity === '#00ffff' ? displayRarity : 'var(--' + winnerRarity + ')'}; font-weight: bold; text-shadow: ${winnerRarity === 'ultrapremium' ? '0 0 15px rgba(0,255,255,1)' : 'none'};">${winner.name}</span> ! (+${winner.val}💎)`;
-                    this.user.inventory.push({ ...winner, rarity: winnerRarity, uid: Date.now() });
+            closeWelcome: function() {
+                // Save checkbox preference
+                const dontShow = document.getElementById('welcome-dontshow')?.checked;
+                if (this.user) {
+                    this.user.seenWelcome = !!dontShow || true; // mark as seen when closed
                     this.saveUser();
-                    this.notify(`✨ ${winner.name} ajouté à ton inventaire !`, 'success');
-                }, 4100);
+                } else {
+                    if (dontShow) localStorage.setItem('dc_seen_welcome_global', '1');
+                }
+                document.getElementById('welcome-overlay').classList.remove('active');
             },
 
-            renderInventory: function() {
-                const container = document.getElementById('inventory-list');
-                container.innerHTML = '';
-                
-                if (this.user.inventory.length === 0) {
-                    container.innerHTML = '<p style="color:grey; width:100%; text-align:center; padding: 40px;">Inventaire vide. Ouvre des caisses pour gagner des objets !</p>';
-                    return;
+            showTutorial: function(force = false) {
+                if (!this.user && !force) {
+                    // Allow non-logged users to view tutorial but do not persist
                 }
+                if (!force && this.user && this.user.seenTutorial) return;
+                const overlay = document.getElementById('tutorial-overlay');
+                overlay.classList.add('active');
 
-                this.user.inventory.forEach((item, index) => {
-                    const div = document.createElement('div');
-                    div.className = `item-card ${item.rarity}`;
-                    div.innerHTML = `
-                        <div style="font-size: 2rem; margin-bottom: 10px;">★</div>
-                        <strong style="display: block; margin-bottom: 5px;">${item.name}</strong>
-                        <small style="color: #94a3b8;">Valeur: ${item.val} 💎</small>
-                        <button class="btn-action btn-sell" onclick="app.sellSystem(${index})">Vendre ${item.val}💎</button>
-                        <button class="btn-action btn-market" onclick="app.showMarketForm(${index})">Vendre sur Marché</button>
-                        <div id="market-form-${index}" class="market-price-form">
-                            <input type="number" id="price-${index}" placeholder="Prix en 💎" min="${item.val}">
-                            <button class="btn-confirm" onclick="app.confirmMarketSale(${index})">✓</button>
-                            <button class="btn-cancel" onclick="app.cancelMarketForm(${index})">✗</button>
-                        </div>
-                    `;
-                    container.appendChild(div);
+                // Setup steps UI
+                const steps = Array.from(document.querySelectorAll('.tutorial-step'));
+                steps.forEach((s, i) => s.classList.toggle('active', i === 0));
+                this._tutorialIndex = 0;
+                this._tutorialSteps = steps;
+                this._updateTutorialControls();
+                // indicators
+                const indicators = document.getElementById('tutorial-indicators');
+                indicators.innerHTML = '';
+                steps.forEach((s, idx) => {
+                    const d = document.createElement('div');
+                    d.className = 'tutorial-dot' + (idx === 0 ? ' active' : '');
+                    indicators.appendChild(d);
                 });
             },
 
-            showMarketForm: function(index) {
-                document.getElementById(`market-form-${index}`).classList.add('active');
-            },
-
-            cancelMarketForm: function(index) {
-                document.getElementById(`market-form-${index}`).classList.remove('active');
-            },
-
-            confirmMarketSale: function(index) {
-                const priceInput = document.getElementById(`price-${index}`);
-                const price = parseInt(priceInput.value);
-                const item = this.user.inventory[index];
-
-                if (!price || price < item.val) {
-                    this.notify('Prix invalide ! Minimum: ' + item.val + '💎', 'error');
-                    return;
+            tutorialNext: function() {
+                if (!this._tutorialSteps) return;
+                if (this._tutorialIndex < this._tutorialSteps.length - 1) {
+                    this._tutorialSteps[this._tutorialIndex].classList.remove('active');
+                    this._tutorialIndex++;
+                    this._tutorialSteps[this._tutorialIndex].classList.add('active');
+                    this._updateTutorialControls();
                 }
-
-                this.marketData.push({
-                    id: Date.now(),
-                    seller: this.user.name,
-                    item: item,
-                    price: price,
-                    rarity: item.rarity
-                });
-
-                this.user.inventory.splice(index, 1);
-                this.saveUser();
-                this.notify("✅ Objet mis en vente sur le marché !", 'success');
             },
 
-            sellSystem: function(index) {
-                const item = this.user.inventory[index];
-                this.user.diamonds += item.val;
-                this.user.inventory.splice(index, 1);
-                this.saveUser();
-                this.notify(`💰 Vendu pour ${item.val}💎`, 'success');
-            },
-
-            renderMarket: function() {
-                const container = document.getElementById('market-list');
-                container.innerHTML = '';
-
-                if (this.marketData.length === 0) {
-                    container.innerHTML = '<p style="color:grey; width:100%; text-align:center; padding: 40px;">Aucune offre sur le marché pour le moment.</p>';
-                    return;
+            tutorialPrev: function() {
+                if (!this._tutorialSteps) return;
+                if (this._tutorialIndex > 0) {
+                    this._tutorialSteps[this._tutorialIndex].classList.remove('active');
+                    this._tutorialIndex--;
+                    this._tutorialSteps[this._tutorialIndex].classList.add('active');
+                    this._updateTutorialControls();
                 }
-
-                this.marketData.forEach((offer, index) => {
-                    const isMe = offer.seller === this.user.name;
-                    const div = document.createElement('div');
-                    div.className = `item-card ${offer.rarity}`;
-                    div.innerHTML = `
-                        <div style="font-size: 2rem; margin-bottom: 10px;">★</div>
-                        <strong style="display: block; margin-bottom: 5px;">${offer.item.name}</strong>
-                        <small style="color: #94a3b8; display: block; margin-bottom: 5px;">Vendeur: ${offer.seller}</small>
-                        <strong style="color:var(--gold); font-size: 1.1rem;">${offer.price} 💎</strong>
-                        ${isMe 
-                            ? `<button class="btn-action" disabled style="background:#333; cursor: not-allowed;">Ton offre</button>` 
-                            : `<button class="btn-action btn-buy" onclick="app.buyMarket(${index})">Acheter</button>`
-                        }
-                    `;
-                    container.appendChild(div);
-                });
             },
 
-            buyMarket: function(index) {
-                const offer = this.marketData[index];
-                if (this.user.diamonds < offer.price) {
-                    return this.notify("💎 Pas assez de diamants !", "error");
+            _updateTutorialControls: function() {
+                const prev = document.getElementById('tutorial-prev');
+                const next = document.getElementById('tutorial-next');
+                const done = document.getElementById('tutorial-done');
+                prev.style.display = this._tutorialIndex === 0 ? 'none' : 'inline-block';
+                if (this._tutorialIndex === this._tutorialSteps.length - 1) {
+                    next.style.display = 'none';
+                    done.style.display = 'inline-block';
+                } else {
+                    next.style.display = 'inline-block';
+                    done.style.display = 'none';
                 }
-
-                this.user.diamonds -= offer.price;
-                this.user.inventory.push({ ...offer.item, rarity: offer.rarity, uid: Date.now() });
-                
-                this.marketData.splice(index, 1);
-                
-                this.saveUser();
-                this.renderMarket();
-                this.notify(`✅ Achat réussi : ${offer.item.name}`, 'success');
+                // indicators
+                const dots = document.querySelectorAll('.tutorial-dot');
+                dots.forEach((d, i) => d.classList.toggle('active', i === this._tutorialIndex));
             },
 
-            selectPackage: function(amount, price) {
-                this.currentPackage = { amount, price };
-                document.getElementById('payment-amount').innerText = `💎 ${amount.toLocaleString()}`;
-                document.getElementById('payment-price').innerText = `${price.toFixed(2)}€`;
-                document.getElementById('card-price').innerText = `${price.toFixed(2)}€`;
+            closeTutorial: function() {
+                document.getElementById('tutorial-overlay').classList.remove('active');
+                if (this.user) {
+                    this.user.seenTutorial = true;
+                    this.saveUser();
+                }
+            },
+
+            // -----------------------
+            // Packs & boutique
+            // -----------------------
+            selectPackage: function(a, price) {
+                // Accept object or (amount, price)
+                let pkg;
+                if (typeof a === 'object') {
+                    pkg = a;
+                } else {
+                    pkg = { amount: a, price: price };
+                }
+                this.currentPackage = pkg;
+                document.getElementById('payment-amount').innerText = `💎 ${pkg.amount.toLocaleString()}`;
+                document.getElementById('payment-price').innerText = `${(pkg.price || 0).toFixed(2)}€`;
+                document.getElementById('card-price').innerText = `${(pkg.price || 0).toFixed(2)}€`;
                 document.getElementById('payment-overlay').classList.add('active');
             },
 
@@ -2730,13 +2791,30 @@
                 
                 // Simulation de traitement
                 setTimeout(() => {
-                    this.user.diamonds += this.currentPackage.amount;
+                    // If package contains special bonuses (object) we can grant them here
+                    let amount = 0;
+                    if (this.currentPackage) amount = this.currentPackage.amount || 0;
+                    this.user.diamonds += amount;
+
+                    // simulate bonus: if package has bonus string, give small chance extra
+                    if (this.currentPackage && this.currentPackage.bonus) {
+                        // apply simple extra for enormous packs
+                        if (this.currentPackage.amount >= 100000) {
+                            // grant a rare item occasionally
+                            if (Math.random() > 0.5) {
+                                const item = ITEMS_DB.mythic[Math.floor(Math.random() * ITEMS_DB.mythic.length)];
+                                this.user.inventory.push({ ...item, rarity: 'mythic', uid: Date.now() });
+                                this.notify('🎁 Bonus : un item mythic a été ajouté à ton inventaire !', 'success');
+                            }
+                        }
+                    }
+
                     this.saveUser();
                     
-                    document.getElementById('success-diamonds-amount').innerText = `💎 +${this.currentPackage.amount.toLocaleString()}`;
+                    document.getElementById('success-diamonds-amount').innerText = `💎 +${amount.toLocaleString()}`;
                     document.getElementById('success-animation').classList.add('active');
                     
-                    this.notify(`💎 ${this.currentPackage.amount.toLocaleString()} diamants ajoutés !`, 'success');
+                    this.notify(`💎 ${amount.toLocaleString()} diamants ajoutés !`, 'success');
                 }, 500);
             },
 
@@ -3360,10 +3438,7 @@
                 
                 this.renderBlackjackCards();
                 
-                const playerValue = this.calcHandValue(this.blackjackState.playerHand);
-                const dealerValue = this.calcHandValue(this.blackjackState.dealerHand);
-                
-                if (dealerValue > 21) {
+                const playerValue                if (dealerValue > 21) {
                     this.blackjackEnd(true, 'VICTOIRE ! Le croupier a dépassé 21 !');
                 } else if (playerValue > dealerValue) {
                     this.blackjackEnd(true, 'VICTOIRE ! Vous battez le croupier !');
@@ -3473,7 +3548,6 @@
                 const symbols = ['🍎', '🍊', '🍋', '🍒', '💎', '👑', '🎰'];
                 const results = reels.map(() => symbols[Math.floor(Math.random() * symbols.length)]);
                 
-                let completed = 0;
                 reels.forEach((reel, index) => {
                     const duration = 2000 + (index * 200);
                     setTimeout(() => {
@@ -3539,6 +3613,110 @@
                 this.slotsMachineState.lastWin = winAmount;
                 this.saveUser();
                 this.updateSlotsUI();
+            },
+
+            // -----------------------
+            // ROULETTE
+            // -----------------------
+            rouletteState: {
+                spinning: false,
+                currentBet: 10,
+                selectedColor: null
+            },
+
+            setRouletteBet: function(amount) {
+                this.rouletteState.currentBet = amount;
+                document.getElementById('roulette-bet').value = amount;
+                this.updateRouletteUI();
+            },
+
+            rouletteBet: function(color) {
+                if (this.rouletteState.spinning) {
+                    this.notify('La roue tourne, attends la fin!', 'error');
+                    return;
+                }
+
+                const bet = parseInt(document.getElementById('roulette-bet').value) || 10;
+                
+                if (this.user.diamonds < bet) {
+                    this.notify(`Tu n'as pas assez de diamants! (besoin: ${bet}, tu as: ${this.user.diamonds})`, 'error');
+                    return;
+                }
+
+                this.rouletteState.selectedColor = color;
+                this.rouletteState.currentBet = bet;
+                this.user.diamonds -= bet;
+                
+                this.updateRouletteUI();
+                this.spinRoulette();
+            },
+
+            spinRoulette: function() {
+                if (this.rouletteState.spinning) return;
+                
+                this.rouletteState.spinning = true;
+                const wheel = document.getElementById('roulette-wheel');
+                const messageBox = document.getElementById('roulette-message');
+                messageBox.classList.remove('active', 'success', 'danger');
+                
+                wheel.classList.add('spinning');
+                
+                const spins = 8 + Math.random() * 4;
+                const randomRotation = Math.random() * 360;
+                const totalRotation = (spins * 360) + randomRotation;
+                
+                wheel.style.transform = `rotate(${totalRotation}deg)`;
+                
+                setTimeout(() => {
+                    wheel.classList.remove('spinning');
+                    
+                    const normalizedRotation = randomRotation % 360;
+                    let result = this.getRouletteResult(normalizedRotation);
+                    
+                    const isWin = result === this.rouletteState.selectedColor;
+                    let winAmount = 0;
+                    
+                    if (isWin) {
+                        if (result === 'gold') {
+                            winAmount = this.rouletteState.currentBet * 14;
+                        } else {
+                            winAmount = this.rouletteState.currentBet * 2;
+                        }
+                        
+                        this.user.diamonds += winAmount + this.rouletteState.currentBet;
+                        messageBox.innerHTML = `🎉 GAGNÉ! +${winAmount} 💎`;
+                        messageBox.classList.add('active', 'success');
+                        this.notify(`Vous avez gagné ${winAmount} 💎!`, 'success');
+                    } else {
+                        messageBox.innerHTML = `😢 Perdu! La roue a montré ${this.getColorEmoji(result)}`;
+                        messageBox.classList.add('active', 'danger');
+                        this.notify('Vous avez perdu cette mise...', 'error');
+                    }
+                    
+                    this.rouletteState.spinning = false;
+                    this.saveUser();
+                    this.updateRouletteUI();
+                }, 3000);
+            },
+
+            getRouletteResult: function(rotation) {
+                const segments = ['red', 'black', 'gold', 'red', 'black', 'gold'];
+                const segmentAngle = 360 / segments.length;
+                const index = Math.floor(rotation / segmentAngle);
+                return segments[index];
+            },
+
+            getColorEmoji: function(color) {
+                const emojis = { red: '🔴', black: '⚫', gold: '⭐' };
+                return emojis[color] || '?';
+            },
+
+            updateRouletteUI: function() {
+                if (!this.user) return;
+                document.getElementById('roulette-balance').innerText = this.user.diamonds.toLocaleString();
+                document.getElementById('roulette-bet-amount').innerText = this.rouletteState.currentBet;
+                document.getElementById('roulette-color-selected').innerText = this.rouletteState.selectedColor ? 
+                    `${this.getColorEmoji(this.rouletteState.selectedColor)} ${this.rouletteState.selectedColor.toUpperCase()}` : '-';
             }
         };
 
