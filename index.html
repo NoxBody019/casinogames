@@ -3041,17 +3041,23 @@
             },
 
             blackjackStand: function() {
+                // Désactiver les boutons
                 document.getElementById('bj-hit').disabled = true;
                 document.getElementById('bj-stand').disabled = true;
                 document.getElementById('bj-double').disabled = true;
                 
+                // Le croupier tire tant qu'il a moins de 17
                 while (this.calcHandValue(this.blackjackState.dealerHand) < 17) {
                     this.dealCard(this.blackjackState.dealerHand);
                 }
                 
                 this.renderBlackjackCards();
                 
-                const playerValue                if (dealerValue > 21) {
+                const playerValue = this.calcHandValue(this.blackjackState.playerHand);
+                const dealerValue = this.calcHandValue(this.blackjackState.dealerHand);
+
+                // Comparaison des scores
+                if (dealerValue > 21) {
                     this.blackjackEnd(true, 'VICTOIRE ! Le croupier a dépassé 21 !');
                 } else if (playerValue > dealerValue) {
                     this.blackjackEnd(true, 'VICTOIRE ! Vous battez le croupier !');
@@ -3226,9 +3232,248 @@
                 this.slotsMachineState.lastWin = winAmount;
                 this.saveUser();
                 this.updateSlotsUI();
-            }
-        };
+            
+        },
+// --- LOGIQUE DES CAISSES ---
+            
+            getFreeCase: function() {
+                const now = Date.now();
+                // 24 heures en millisecondes
+                const cooldown = 24 * 60 * 60 * 1000; 
+                
+                if (now < nextFreeCase) {
+                    const remaining = Math.ceil((nextFreeCase - now) / (1000 * 60 * 60));
+                    return this.notify(`Reviens dans ${remaining} heures !`, 'error');
+                }
+                
+                nextFreeCase = now + cooldown;
+                localStorage.setItem('dc_freecase_time', nextFreeCase);
+                
+                // Ouvre une caisse commune gratuitement
+                this.openCase('common', true);
+            },
 
+            openCase: function(type, isFree = false) {
+                if (!isFree) {
+                    const price = CASE_PRICES[type];
+                    if (this.user.diamonds < price) {
+                        return this.notify(`Pas assez de diamants ! (${price} requis)`, 'error');
+                    }
+                    this.user.diamonds -= price;
+                }
+
+                // Afficher la roulette
+                const wrapper = document.getElementById('roulette-wrapper');
+                wrapper.style.display = 'block';
+                const strip = document.getElementById('roulette-strip');
+                strip.innerHTML = '';
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateX(0)';
+
+                // Déterminer l'objet gagné (Logique de poids)
+                const pool = ITEMS_DB[type] || ITEMS_DB.common;
+                const winItem = pool[Math.floor(Math.random() * pool.length)];
+
+                // Générer les items de la roulette (visuel)
+                // On génère 50 items, le gagnant sera vers la fin (index 35 environ)
+                const cardWidth = 130; 
+                let winnerIndex = 35;
+                
+                for(let i=0; i<50; i++) {
+                    let item;
+                    if(i === winnerIndex) {
+                        item = winItem;
+                    } else {
+                        // Items aléatoires pour le décor
+                        const randomType = Object.keys(ITEMS_DB)[Math.floor(Math.random() * 4)]; // common à legendary
+                        const randomPool = ITEMS_DB[randomType];
+                        item = randomPool[Math.floor(Math.random() * randomPool.length)];
+                    }
+
+                    const el = document.createElement('div');
+                    el.className = 'roulette-item';
+                    el.innerHTML = `
+                        <div style="font-size:2rem;">📦</div>
+                        <div style="font-size:0.8rem; font-weight:bold; text-align:center;">${item.name}</div>
+                        <div style="font-size:0.7rem; color:#aaa;">${item.val} 💎</div>
+                    `;
+                    // Bordure selon rareté (simplifié)
+                    if(item.val > 1000) el.style.borderBottom = "4px solid var(--mythic)";
+                    else if(item.val > 100) el.style.borderBottom = "4px solid var(--legendary)";
+                    else el.style.borderBottom = "4px solid var(--common)";
+                    
+                    strip.appendChild(el);
+                }
+
+                // Lancer l'animation
+                setTimeout(() => {
+                    const randomOffset = Math.floor(Math.random() * 100) - 50; // Pour ne pas tomber pile au milieu
+                    // Calcul position : (Index * Largeur) - (Moitié écran) + (Moitié item)
+                    const position = (winnerIndex * cardWidth) - (wrapper.offsetWidth / 2) + (cardWidth / 2) + randomOffset;
+                    
+                    strip.style.transition = 'transform 4s cubic-bezier(0.1, 0.9, 0.3, 1)';
+                    strip.style.transform = `translateX(-${position}px)`;
+                }, 100);
+
+                // Résultat après animation
+                setTimeout(() => {
+                    this.notify(`Tu as gagné : ${winItem.name}`, 'success');
+                    // Ajouter à l'inventaire avec un ID unique
+                    this.user.inventory.push({ ...winItem, uid: Date.now(), rarity: type });
+                    this.saveUser();
+                    document.getElementById('win-message').innerText = `Gagné : ${winItem.name} (+${winItem.val}💎)`;
+                }, 4100);
+            },
+            // --- GESTION INVENTAIRE & MARCHÉ ---
+
+            renderInventory: function() {
+                const container = document.getElementById('inventory-list');
+                container.innerHTML = '';
+
+                if (this.user.inventory.length === 0) {
+                    container.innerHTML = '<p style="width:100%; text-align:center; color:#94a3b8">Inventaire vide.</p>';
+                    return;
+                }
+
+                this.user.inventory.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = `item-card ${item.rarity || 'common'}`;
+                    div.innerHTML = `
+                        <div style="font-size:2rem; margin-bottom:10px;">🎒</div>
+                        <div style="font-weight:bold; margin-bottom:5px;">${item.name}</div>
+                        <div style="font-size:0.9rem; color:#cbd5e1;">Valeur: ${item.val} 💎</div>
+                        <button class="btn-action btn-sell" onclick="app.quickSell(${item.uid}, ${item.val})">Vendre (${item.val})</button>
+                        <button class="btn-action btn-market" onclick="app.showSellForm(${item.uid})">Marché</button>
+                        <div id="market-form-${item.uid}" class="market-price-form">
+                            <input type="number" id="price-${item.uid}" placeholder="Prix" value="${Math.floor(item.val * 1.2)}">
+                            <div style="display:flex;">
+                                <button class="btn-confirm" onclick="app.listOnMarket(${item.uid})">OK</button>
+                                <button class="btn-cancel" onclick="app.hideSellForm(${item.uid})">X</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            },
+
+            quickSell: function(uid, val) {
+                // Vente instantanée à la banque (valeur de base)
+                this.user.inventory = this.user.inventory.filter(i => i.uid !== uid);
+                this.user.diamonds += val;
+                this.notify(`Objet vendu pour ${val} 💎`, 'success');
+                this.saveUser();
+            },
+
+            showSellForm: function(uid) {
+                document.querySelectorAll('.market-price-form').forEach(e => e.classList.remove('active'));
+                const form = document.getElementById(`market-form-${uid}`);
+                if(form) form.classList.add('active');
+            },
+            
+            hideSellForm: function(uid) {
+                const form = document.getElementById(`market-form-${uid}`);
+                if(form) form.classList.remove('active');
+            },
+
+            listOnMarket: function(uid) {
+                const item = this.user.inventory.find(i => i.uid === uid);
+                const priceInput = document.getElementById(`price-${uid}`);
+                const price = parseInt(priceInput.value);
+
+                if (!item) return;
+                if (price < 1) return this.notify("Prix invalide", "error");
+
+                // Retirer de l'inventaire
+                this.user.inventory = this.user.inventory.filter(i => i.uid !== uid);
+                
+                // Ajouter au marché
+                this.marketData.push({
+                    id: Date.now(),
+                    seller: this.user.name,
+                    item: item,
+                    price: price,
+                    rarity: item.rarity
+                });
+                
+                this.notify("Objet mis en vente sur le marché !", "success");
+                this.saveUser(); // Sauvegarde user + market
+            },
+
+            renderMarket: function() {
+                const container = document.getElementById('market-list');
+                container.innerHTML = '';
+                
+                if (this.marketData.length === 0) {
+                    container.innerHTML = '<p style="width:100%; text-align:center; color:#94a3b8">Le marché est vide.</p>';
+                    return;
+                }
+
+                // Trier par plus récent
+                const sortedMarket = [...this.marketData].sort((a, b) => b.id - a.id);
+
+                sortedMarket.forEach(offer => {
+                    const isMyItem = offer.seller === this.user.name;
+                    const div = document.createElement('div');
+                    div.className = `item-card ${offer.rarity || 'common'}`;
+                    div.innerHTML = `
+                        <div style="font-size:0.8rem; color:#aaa; margin-bottom:5px;">Vendeur: ${offer.seller}</div>
+                        <div style="font-size:2rem; margin-bottom:5px;">⚖️</div>
+                        <div style="font-weight:bold; margin-bottom:5px;">${offer.item.name}</div>
+                        <div style="font-size:1.1rem; color:var(--gold); font-weight:bold;">${offer.price} 💎</div>
+                        ${isMyItem 
+                            ? `<button class="btn-action btn-cancel" onclick="app.removeFromMarket(${offer.id})">Retirer</button>`
+                            : `<button class="btn-action btn-buy" onclick="app.buyFromMarket(${offer.id})">Acheter</button>`
+                        }
+                    `;
+                    container.appendChild(div);
+                });
+            },
+
+            buyFromMarket: function(offerId) {
+                const offerIndex = this.marketData.findIndex(o => o.id === offerId);
+                if (offerIndex === -1) return this.notify("Cet offre n'existe plus.", "error");
+                
+                const offer = this.marketData[offerIndex];
+                
+                if (this.user.diamonds < offer.price) {
+                    return this.notify(`Pas assez de diamants (${offer.price} requis)`, "error");
+                }
+
+                // Transaction
+                this.user.diamonds -= offer.price;
+                this.user.inventory.push({ ...offer.item, uid: Date.now() }); // Nouvel ID pour l'acheteur
+                
+                // Payer le vendeur (si c'est un vrai user)
+                if (this.usersDB[offer.seller]) {
+                    this.usersDB[offer.seller].diamonds += offer.price;
+                }
+                
+                // Retirer du marché
+                this.marketData.splice(offerIndex, 1);
+                
+                this.notify(`Acheté ${offer.item.name} pour ${offer.price}💎`, "success");
+                this.saveUser();
+                this.renderMarket();
+            },
+
+            removeFromMarket: function(offerId) {
+                const offerIndex = this.marketData.findIndex(o => o.id === offerId);
+                if (offerIndex === -1) return;
+                
+                const offer = this.marketData[offerIndex];
+                
+                // Remettre dans l'inventaire
+                this.user.inventory.push(offer.item);
+                
+                // Retirer du marché
+                this.marketData.splice(offerIndex, 1);
+                
+                this.notify("Objet retiré du marché.", "info");
+                this.saveUser();
+                this.renderMarket();
+
+            }
+            };
         app.init();
         
         document.getElementById('mines-slider').addEventListener('input', function() {
