@@ -1601,6 +1601,317 @@
                 font-size: 2rem;
             }
         }
+
+        /* TOWER GAME STYLES */
+        .tower-wrapper {
+            display: flex;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tower-game-area {
+            flex: 1;
+        }
+
+        .tower-mode-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tower-mode-btn {
+            flex: 1;
+            padding: 18px 20px;
+            border: 2px solid #334155;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.1));
+            color: #cbd5e1;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tower-mode-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .tower-mode-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
+        }
+
+        .tower-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+            min-height: 600px;
+        }
+
+        .tower-column {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 12px;
+            min-width: 100px;
+        }
+
+        .tower-column.easy {
+            min-width: 120px;
+        }
+
+        .tower-floor {
+            background: linear-gradient(135deg, rgba(15, 172, 204, 0.2), rgba(0, 229, 255, 0.2));
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .tower-floor:hover:not(.completed):not(.lost) {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(0, 229, 255, 0.3));
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .tower-floor.current {
+            background: linear-gradient(135deg, var(--primary), rgba(0, 229, 255, 0.5));
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.6), inset 0 0 20px rgba(56, 189, 248, 0.2);
+            animation: pulseFloor 1s ease-in-out infinite;
+        }
+
+        @keyframes pulseFloor {
+            0%, 100% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.6), inset 0 0 20px rgba(56, 189, 248, 0.2); }
+            50% { box-shadow: 0 0 50px rgba(56, 189, 248, 0.8), inset 0 0 30px rgba(56, 189, 248, 0.3); }
+        }
+
+        .tower-floor.completed {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.3), rgba(34, 197, 94, 0.3));
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .tower-floor.lost {
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.3), rgba(239, 68, 68, 0.3));
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .tower-floor-level {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .tower-multiplier {
+            font-size: 0.85rem;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        .tower-sidebar {
+            width: 320px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(129, 140, 248, 0.05));
+            border: 2px solid rgba(56, 189, 248, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tower-stats-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .tower-stat-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .tower-stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .tower-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tower-controls input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #334155;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .tower-controls input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .tower-btn-start {
+            background: linear-gradient(135deg, var(--success), rgba(34, 197, 94, 0.8));
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .tower-btn-start:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.4);
+        }
+
+        .tower-btn-start:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .tower-btn-cashout {
+            background: linear-gradient(135deg, var(--gold), rgba(251, 191, 36, 0.8));
+            color: #0f172a;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .tower-btn-cashout.show {
+            display: block;
+        }
+
+        .tower-btn-cashout:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
+        }
+
+        .tower-history {
+            margin-top: 30px;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .tower-history-item {
+            font-size: 0.85rem;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .tower-history-item.win {
+            border-left: 3px solid var(--success);
+            color: var(--success);
+        }
+
+        .tower-history-item.loss {
+            border-left: 3px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .tower-info {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .tower-result-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-panel);
+            padding: 40px;
+            border-radius: 16px;
+            border: 2px solid var(--primary);
+            z-index: 1000;
+            text-align: center;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            animation: slideUp 0.3s ease;
+        }
+
+        .tower-result-popup.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, -40%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+
+        .tower-result-popup.win {
+            border-color: var(--success);
+        }
+
+        .tower-result-popup.lose {
+            border-color: var(--danger);
+        }
+
+        .tower-result-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .tower-result-amount {
+            font-size: 2rem;
+            color: var(--gold);
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .tower-result-popup.win .tower-result-title {
+            color: var(--success);
+        }
+
+        .tower-result-popup.lose .tower-result-title {
+            color: var(--danger);
+        }
     </style>
 </head>
 <body>
@@ -1662,6 +1973,7 @@
             <nav>
                 <button onclick="app.nav('cases')" class="active">🧰 Caisses</button>
                 <button onclick="app.nav('mines')">⚡ Mines</button>
+                <button onclick="app.nav('tower')">🏰 Tower</button>
                 <button onclick="app.nav('blackjack')">🎴 Blackjack</button>
                 <button onclick="app.nav('slots')">🎰 Slots</button>
                 <button onclick="app.nav('inventory')">Inventaire</button>
@@ -2071,6 +2383,67 @@
                         <div class="diamond-price">4999.99€</div>
                         <p style="color: #94a3b8; margin-bottom: 15px;">Le pack ultime — très rare, énorme bonus</p>
                         <button class="btn-main" onclick="app.selectPackage({ id:'mega-ultra', amount:5000000, price:4999.99, title:'MEGA ULTRA', bonus:'Bonus légendaire + items uniques'})">Acheter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION TOWER -->
+            <div id="sec-tower" class="section">
+                <h2>🏰 Ascension de la Tour Infinie</h2>
+                
+                <div class="tower-mode-selector">
+                    <button class="tower-mode-btn active" onclick="app.selectTowerMode('easy')">🟢 Mode Facile (3 Colonnes)</button>
+                    <button class="tower-mode-btn" onclick="app.selectTowerMode('hard')">🔴 Mode Difficile (2 Colonnes)</button>
+                </div>
+
+                <div class="tower-wrapper">
+                    <div class="tower-game-area">
+                        <div class="tower-info" id="tower-mode-info">
+                            📌 Mode Facile : 3 colonnes, 30 étages. Gagnez un multiplicateur à chaque étage. Plus sûr mais gains plus lents.
+                        </div>
+
+                        <div class="tower-container" id="tower-container"></div>
+
+                        <div id="tower-result-popup" class="tower-result-popup">
+                            <div class="tower-result-title" id="tower-result-title">Gagné!</div>
+                            <p id="tower-result-text" style="margin: 15px 0; font-size: 1.1rem;"></p>
+                            <div class="tower-result-amount" id="tower-result-amount">+100 💎</div>
+                            <button class="btn-main" onclick="app.closeTowerPopup()" style="margin-top: 20px;">Continuer</button>
+                        </div>
+                    </div>
+
+                    <div class="tower-sidebar">
+                        <div class="tower-stats-box">
+                            <div class="tower-stat-label">💎 Solde</div>
+                            <div class="tower-stat-value" id="tower-balance">0</div>
+                        </div>
+
+                        <div class="tower-stats-box">
+                            <div class="tower-stat-label">Mise</div>
+                            <div class="tower-stat-value" id="tower-current-bet">0</div>
+                        </div>
+
+                        <div class="tower-stats-box">
+                            <div class="tower-stat-label">Gains Potentiels</div>
+                            <div class="tower-stat-value" id="tower-potential-win">0</div>
+                        </div>
+
+                        <div class="tower-stats-box">
+                            <div class="tower-stat-label">Multiplicateur</div>
+                            <div class="tower-stat-value" id="tower-multiplier">1.00x</div>
+                        </div>
+
+                        <div class="tower-controls">
+                            <label style="color: #cbd5e1; font-weight: bold; margin-bottom: 8px;">Montant à Miser 💎</label>
+                            <input type="number" id="tower-bet-input" placeholder="Entrez votre mise" value="100" min="1">
+                        </div>
+
+                        <button class="tower-btn-start" id="tower-btn-start" onclick="app.startTowerGame()">🎮 DÉMARRER LA PARTIE</button>
+                        <button class="tower-btn-cashout" id="tower-btn-cashout" onclick="app.towerCashout()">💰 ENCAISSER</button>
+
+                        <div class="tower-history" id="tower-history">
+                            <div style="text-align: center; color: #94a3b8; padding: 20px;">L'historique des parties apparaîtra ici</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3935,9 +4308,295 @@
                 this.notify("Objet retiré du marché.", "info");
                 this.saveUser();
                 this.renderMarket();
+            },
 
+            // ========== TOWER GAME ==========
+            towerState: {
+                mode: 'easy',
+                columns: 3,
+                floors: 30,
+                currentFloor: 0,
+                bet: 0,
+                multiplier: 1,
+                gameActive: false,
+                correctPath: [],
+                history: []
+            },
+
+            selectTowerMode: function(mode) {
+                if (this.towerState.gameActive) {
+                    return this.notify('Termine ta partie avant de changer de mode !', 'error');
+                }
+                
+                this.towerState.mode = mode;
+                this.towerState.columns = mode === 'easy' ? 3 : 2;
+                this.towerState.floors = 30;
+                
+                // Update UI
+                document.querySelectorAll('.tower-mode-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                const infoText = mode === 'easy' 
+                    ? '🟢 Mode Facile : 3 colonnes, 30 étages. Gagnez un multiplicateur à chaque étage. Plus sûr mais gains plus lents.'
+                    : '🔴 Mode Difficile : 2 colonnes, 30 étages. Gains BEAUCOUP plus rapides mais plus risqué !';
+                
+                document.getElementById('tower-mode-info').innerText = infoText;
+                
+                this.renderTowerGame();
+                this.updateTowerUI();
+            },
+
+            renderTowerGame: function() {
+                const container = document.getElementById('tower-container');
+                container.innerHTML = '';
+                
+                const cols = this.towerState.columns;
+                
+                for (let col = 0; col < cols; col++) {
+                    const column = document.createElement('div');
+                    column.className = 'tower-column' + (cols === 3 ? ' easy' : '');
+                    
+                    for (let floor = 0; floor < this.towerState.floors; floor++) {
+                        const floorDiv = document.createElement('div');
+                        floorDiv.className = 'tower-floor';
+                        floorDiv.dataset.floor = floor;
+                        floorDiv.dataset.col = col;
+                        
+                        const mult = this.calculateTowerMultiplier(floor + 1);
+                        floorDiv.innerHTML = `
+                            <div class="tower-floor-level">Étage ${floor + 1}</div>
+                            <div class="tower-multiplier">${mult.toFixed(2)}x</div>
+                        `;
+                        
+                        floorDiv.onclick = () => this.selectTowerFloor(floor, col);
+                        column.appendChild(floorDiv);
+                    }
+                    
+                    container.appendChild(column);
+                }
+            },
+
+            calculateTowerMultiplier: function(floor) {
+                const mode = this.towerState.mode;
+                const base = mode === 'easy' ? 1.05 : 1.15;
+                return Math.pow(base, floor);
+            },
+
+            startTowerGame: function() {
+                const betInput = document.getElementById('tower-bet-input');
+                const bet = parseInt(betInput.value);
+                
+                if (!bet || bet < 1) {
+                    return this.notify('Entre une mise valide !', 'error');
+                }
+                
+                if (this.user.diamonds < bet) {
+                    return this.notify('Pas assez de diamants !', 'error');
+                }
+                
+                if (this.towerState.gameActive) {
+                    return this.notify('Partie déjà en cours !', 'error');
+                }
+                
+                this.user.diamonds -= bet;
+                
+                this.towerState.bet = bet;
+                this.towerState.currentFloor = 0;
+                this.towerState.multiplier = 1;
+                this.towerState.gameActive = true;
+                this.towerState.correctPath = [];
+                
+                for (let i = 0; i < this.towerState.floors; i++) {
+                    const correctCol = Math.floor(Math.random() * this.towerState.columns);
+                    this.towerState.correctPath.push(correctCol);
+                }
+                
+                this.renderTowerGame();
+                this.updateTowerUI();
+                
+                document.querySelectorAll('.tower-floor[data-floor="0"]').forEach(f => {
+                    f.classList.add('current');
+                });
+                
+                document.getElementById('tower-btn-start').style.display = 'none';
+                document.getElementById('tower-btn-cashout').classList.add('show');
+                document.getElementById('tower-bet-input').disabled = true;
+                
+                this.notify('Partie lancée ! Choisis une case au niveau 1', 'success');
+                this.saveUser();
+            },
+
+            selectTowerFloor: function(floor, col) {
+                if (!this.towerState.gameActive) return;
+                if (floor !== this.towerState.currentFloor) return;
+                
+                const correctCol = this.towerState.correctPath[floor];
+                const isCorrect = col === correctCol;
+                
+                const floorDiv = document.querySelector(`.tower-floor[data-floor="${floor}"][data-col="${col}"]`);
+                
+                if (isCorrect) {
+                    floorDiv.classList.add('completed');
+                    floorDiv.classList.remove('current');
+                    
+                    this.towerState.currentFloor++;
+                    this.towerState.multiplier = this.calculateTowerMultiplier(this.towerState.currentFloor);
+                    
+                    document.querySelectorAll(`.tower-floor[data-floor="${floor}"]`).forEach(f => {
+                        f.classList.remove('current');
+                    });
+                    
+                    if (this.towerState.currentFloor >= this.towerState.floors) {
+                        this.towerGameEnd(true, 'win');
+                    } else {
+                        document.querySelectorAll(`.tower-floor[data-floor="${this.towerState.currentFloor}"]`).forEach(f => {
+                            f.classList.add('current');
+                        });
+                        
+                        this.updateTowerUI();
+                        this.notify(`✅ Correct ! Étage ${this.towerState.currentFloor + 1}`, 'success');
+                    }
+                } else {
+                    floorDiv.classList.add('lost');
+                    
+                    const correctFloor = document.querySelector(`.tower-floor[data-floor="${floor}"][data-col="${correctCol}"]`);
+                    if (correctFloor) {
+                        correctFloor.classList.add('completed');
+                        correctFloor.innerHTML += '<div style="position:absolute; top:5px; right:5px; font-size:1.5rem;">✓</div>';
+                    }
+                    
+                    this.towerGameEnd(false, 'lose');
+                }
+            },
+
+            towerCashout: function() {
+                if (!this.towerState.gameActive) return;
+                if (this.towerState.currentFloor === 0) {
+                    return this.notify('Monte au moins 1 étage avant d\'encaisser !', 'error');
+                }
+                
+                this.towerGameEnd(true, 'cashout');
+            },
+
+            towerGameEnd: function(won, reason) {
+                this.towerState.gameActive = false;
+                
+                const winnings = won ? Math.floor(this.towerState.bet * this.towerState.multiplier) : 0;
+                
+                if (won) {
+                    this.user.diamonds += winnings;
+                    
+                    const popup = document.getElementById('tower-result-popup');
+                    popup.className = 'tower-result-popup show win';
+                    
+                    if (reason === 'win') {
+                        document.getElementById('tower-result-title').innerText = '🎉 VICTOIRE TOTALE !';
+                        document.getElementById('tower-result-text').innerText = `Tu as grimpé les ${this.towerState.floors} étages !`;
+                    } else {
+                        document.getElementById('tower-result-title').innerText = '💰 ENCAISSÉ !';
+                        document.getElementById('tower-result-text').innerText = `Étage ${this.towerState.currentFloor} atteint !`;
+                    }
+                    
+                    document.getElementById('tower-result-amount').innerText = `+${winnings} 💎`;
+                    
+                    this.notify(`Gagné ${winnings} 💎 !`, 'success');
+                    
+                    this.towerState.history.unshift({
+                        won: true,
+                        floor: this.towerState.currentFloor,
+                        mult: this.towerState.multiplier.toFixed(2),
+                        winnings: winnings,
+                        time: Date.now()
+                    });
+                } else {
+                    const popup = document.getElementById('tower-result-popup');
+                    popup.className = 'tower-result-popup show lose';
+                    
+                    document.getElementById('tower-result-title').innerText = '💥 PERDU !';
+                    document.getElementById('tower-result-text').innerText = `Tu es tombé à l'étage ${this.towerState.currentFloor + 1}`;
+                    document.getElementById('tower-result-amount').innerText = `-${this.towerState.bet} 💎`;
+                    
+                    this.notify(`Perdu ${this.towerState.bet} 💎`, 'error');
+                    
+                    this.towerState.history.unshift({
+                        won: false,
+                        floor: this.towerState.currentFloor,
+                        mult: this.towerState.multiplier.toFixed(2),
+                        winnings: 0,
+                        time: Date.now()
+                    });
+                }
+                
+                if (this.towerState.history.length > 10) {
+                    this.towerState.history = this.towerState.history.slice(0, 10);
+                }
+                
+                this.updateTowerHistory();
+                this.saveUser();
+                this.resetTowerUI();
+            },
+
+            closeTowerPopup: function() {
+                document.getElementById('tower-result-popup').classList.remove('show');
+            },
+
+            resetTowerUI: function() {
+                document.getElementById('tower-btn-start').style.display = 'block';
+                document.getElementById('tower-btn-cashout').classList.remove('show');
+                document.getElementById('tower-bet-input').disabled = false;
+                
+                this.towerState.currentFloor = 0;
+                this.towerState.multiplier = 1;
+                this.towerState.bet = 0;
+                
+                this.updateTowerUI();
+            },
+
+            updateTowerUI: function() {
+                if (!this.user) return;
+                
+                document.getElementById('tower-balance').innerText = this.user.diamonds.toLocaleString();
+                document.getElementById('tower-current-bet').innerText = this.towerState.bet;
+                document.getElementById('tower-multiplier').innerText = this.towerState.multiplier.toFixed(2) + 'x';
+                
+                const potentialWin = Math.floor(this.towerState.bet * this.towerState.multiplier);
+                document.getElementById('tower-potential-win').innerText = potentialWin;
+            },
+
+            updateTowerHistory: function() {
+                const container = document.getElementById('tower-history');
+                
+                if (this.towerState.history.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;">L\'historique des parties apparaîtra ici</div>';
+                    return;
+                }
+                
+                container.innerHTML = '<h4 style="color: var(--primary); margin-bottom: 10px;">📜 Historique</h4>';
+                
+                this.towerState.history.forEach(entry => {
+                    const date = new Date(entry.time);
+                    const timeStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                    
+                    const div = document.createElement('div');
+                    div.className = `tower-history-item ${entry.won ? 'win' : 'loss'}`;
+                    
+                    if (entry.won) {
+                        div.innerHTML = `
+                            <div>✅ Étage ${entry.floor} • ${entry.mult}x</div>
+                            <div>+${entry.winnings} 💎 • ${timeStr}</div>
+                        `;
+                    } else {
+                        div.innerHTML = `
+                            <div>❌ Étage ${entry.floor} • ${entry.mult}x</div>
+                            <div>Perdu • ${timeStr}</div>
+                        `;
+                    }
+                    
+                    container.appendChild(div);
+                });
             }
-            };
+        };
+        
         app.init();
         
         document.getElementById('mines-slider').addEventListener('input', function() {
